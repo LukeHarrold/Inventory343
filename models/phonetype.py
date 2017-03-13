@@ -1,19 +1,35 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from __init__ import db
+import enum
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-db = SQLAlchemy(app)
+
+class phoneEnum(enum.Enum):
+    LOW = "Low"
+    MEDIUM = "Medium"
+    HIGH = "High"
+    FLIP = "Flip"
 
 
-class PhoneType(db.Model):
+class phoneType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    phoneType = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
+    phoneType = db.Column(db.Enum(phoneEnum))
+    screenType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
+    batteryType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
+    memoryType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
+    description = db.Column(db.String(300))
+    imagePath = db.Column(db.String(300))
+    price = db.Column(db.Float)
+    deletedAt = db.Column(db.DateTime)
+    
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
-
-    def __repr__(self):
-        return '<User %r>' % self.username
+    def __init__(self, phoneType, screenType, batteryType, memoryType, description, imagePath, price):
+        self.phoneType = phoneType
+        self.screenType = screenType
+        self.batteryType = batteryType
+        self.memoryType = memoryType
+        self.description = description
+        self.imagePath = imagePath
+        self.price = price
+        self.saleDate = datetime.utcnow()

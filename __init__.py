@@ -20,4 +20,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['swen-343-database']['uri']
 db = SQLAlchemy(app)
 
 # import the models *after* the db object is define
+
+from models import parttype
+from models import phonetype
 from models import phone
+from models import part
+from models import phonepart

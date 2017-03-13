@@ -1,27 +1,24 @@
-import flask_sqlalchemy 
+from flask_sqlalchemy import SQLAlchemy 
+from datetime import datetime
 from __init__ import db
 import enum
 
-class phoneEnum(enum.Enum):
-    LOW = "Low"
-    MEDIUM = "Medium"
-    HIGH = "High"
-    FLIP = "Flip"
+
+class statusEnum(enum.Enum):
+    NEW = "New"
+    BROKEN = "Broken"
+    REFURBISHED = "Refurbished"
+
 
 class phone(db.Model):
     id  = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.Enum(phoneEnum))
+    status = db.Column(db.Enum(statusEnum))
+    model = db.Column(db.Integer, db.ForeignKey('phonetype.id'))
+    saleDate = db.Column(db.DateTime)
+    returnDate = db.Column(db.DateTime)
+    refurbishedDate = db.Column(db.DateTime)
 
-
-
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(80), unique=True)
-#     email = db.Column(db.String(120), unique=True)
-
-#     def __init__(self, username, email):
-#         self.username = username
-#         self.email = email
-
-#     def __repr__(self):
-#         return '<User %r>' % self.username
+    
+    def __init__(self, status, model):
+        self.status = status
+        self.model = model

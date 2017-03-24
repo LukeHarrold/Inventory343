@@ -17,7 +17,7 @@ def send_part_information(num_parts, part_type_id):
 def hello():
     return render_template('layout.html')
 
-@app.route('/inventory/', methods=['GET', 'POST'])
+@app.route('/inventory/mock', methods=['GET', 'POST'])
 def stub_completed_phones():
 	#Get phone information here
 	num_phones = random.randint(1,4)
@@ -40,26 +40,24 @@ def stub_completed_phones():
 		phone_info['memory'] = memory
 		phone_info['screen'] = screen
 		phones.append(phone_info)
-	url = 'http://localhost:5000/inventory/us'
-	p = json.dumps(phones)
-	r = requests.post(url, data=p)
-	return r
+	url = 'http://127.0.0.1:5000/inventory'
+	print('original')
+	print(json.dumps(phones))
+	r = requests.post(url, data=json.dumps(phones))
+	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 
-@app.route('/inventory/us/', methods=['POST', 'GET'])
+@app.route('/inventory', methods=['POST'])
 def receive_completed_phones():
-	print('bb we rolling')
-	print(request.method)
-	if request.method == 'POST':
-		print("is a post*******************")
-		phones = request.get_json()
-		print(phones)
-		#phone_info = json.load(phones)
-	#	print(phone_info)
+	phones = request.get_json(force=True)
+	print('received')
+	print(phones)
+	#phone_info = json.load(phones)
+#	print(phone_info)
 #		return redirect(url_for('/'))
-	else:
-		print("why")
-	return redirect(url_for('hello'))
+
+
+	return app.make_response("200")
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders():

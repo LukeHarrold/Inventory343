@@ -1,5 +1,6 @@
 from __init__ import app, db
 import unittest
+import json
 import requests
 
 class apiTest(unittest.TestCase):
@@ -20,10 +21,14 @@ class apiTest(unittest.TestCase):
 
         self.assertEqual(resp.status_code, 200)
 
+
     #/inventory/ --POST
     def test_recieve_completed_phones(self):
-        
-        pass
+        resp = self.app.get('/inventory/mock')
+        print(resp.data)
+        print(resp.headers)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers['ContentType'], 'application/json')
 
     #/inventory/send --POST
     def test_send_phone_to_be_refurbished(self):
@@ -55,7 +60,6 @@ class apiTest(unittest.TestCase):
     #/inventory/phones/{phoneId} --GET
     def test_get_phone(self):
         pass
-
 
 if __name__ == "__main__":
     unittest.main()

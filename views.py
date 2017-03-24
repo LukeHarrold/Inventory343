@@ -60,6 +60,20 @@ def receive_completed_phones():
 	return app.make_response("200")
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
+def phone_orders_mock():
+    orderData = request.get_json(force=True)
+    print(orderData)
+    r = requests.post('http://127.0.0.1:5000/inventory/phones/order', data = json.dumps({"key": "test data"}))
+    print(r)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+
+@app.route('/inventory/phones/order', methods=['POST'])
 def phone_orders():
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    print("HEYYYYYOOOOOO")
+    data = request.get_json(force=True)
+    print(data)
+
+    return app.make_response("junk")
+
 

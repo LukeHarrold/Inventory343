@@ -2,22 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from __init__ import db
-import enum
 
 
-class phoneEnum(enum.Enum):
-    LOW = "Low"
-    MEDIUM = "Medium"
-    HIGH = "High"
-    FLIP = "Flip"
-
-
-class phoneType(db.Model):
+class PhoneType(db.Model):
+    __tablename__ = 'phone_types'
     id = db.Column(db.Integer, primary_key=True)
-    phoneType = db.Column(db.Enum(phoneEnum))
-    screenType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
-    batteryType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
-    memoryType = db.Column(db.Integer, db.ForeignKey('parttype.id'))
+    phoneType = db.Column(db.Integer)
+    screenType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
+    batteryType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
+    memoryType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
     description = db.Column(db.String(300))
     imagePath = db.Column(db.String(300))
     price = db.Column(db.Float)

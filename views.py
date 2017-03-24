@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from __init__ import db
+from __init__ import app, db
 from flask import request
+
+import json
 
 
 
@@ -10,6 +12,16 @@ def send_part_information(num_parts, part_type_id):
 	return
 
 
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+
 @app.route('/inventory/', methods=['POST'])
 def receive_completed_phones():
 	return
+
+
+@app.route('/inventory/phones/ordermock', methods=['POST'])
+def phone_orders():
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 

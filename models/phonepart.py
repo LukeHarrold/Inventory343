@@ -4,10 +4,11 @@ from datetime import datetime
 from __init__ import db
 
 
-class phonePart(db.Model):
+class PhonePart(db.Model):
+    __tablename__ = 'phone_parts'
     id = db.Column(db.Integer, primary_key=True)
-    part = db.Column(db.Integer, db.ForeignKey('part.id'))
-    phone = db.Column(db.Integer, db.ForeignKey('phone.id'))
+    part_id = db.Column(db.Integer, db.ForeignKey('parts.id'))
+    phone_id = db.Column(db.Integer, db.ForeignKey('phones.id'))
  
 
     def __init__(self, partType, price):

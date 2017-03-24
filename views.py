@@ -4,29 +4,50 @@ from __init__ import app, db
 from flask import request, jsonify, render_template, url_for, redirect
 import requests
 import random
+import datetime
 
 import json
+'''
+status options:
+1 = new
+2 = broken
+3 = refurbished
 
+model options:
+h = high
+m = medium
+l = low
+f = flip phone
 
-@app.route('/inventory/<num_parts>/<part_type_id>', methods=['GET'])
-def send_part_information(num_parts, part_type_id):
-	return
-
+part model options:
+1 = screen
+2 = battery
+3 = memory
+'''
 
 @app.route('/')
 def hello():
     return render_template('layout.html')
 
+@app.route('/inventory/<num_parts>/<part_type_id>', methods=['GET'])
+def send_part_information(num_parts, part_type_id):
+	return
+
+@app.route('/inventory/get_parts/mock', methods=['GET'])
+def stub_part_information():
+	num_parts = random.randint(1, 30)
+
+	return
+
 @app.route('/inventory/mock', methods=['GET', 'POST'])
 def stub_completed_phones():
 	#Get phone information here
-	num_phones = random.randint(1,4)
+	num_phones = random.randint(1,10)
 	phone_types = ['h', 'm', 'l', 'f']
 
 	part_types = ['battery', 'screen', 'memory']
 	#need to get battery, screen, and memory part number from db
 	phones = []
-
 
 	for phone in range(1, num_phones):
 		battery = random.randint(1,1000)
@@ -49,13 +70,18 @@ def stub_completed_phones():
 
 @app.route('/inventory', methods=['POST'])
 def receive_completed_phones():
+
 	phones = request.get_json(force=True)
 	print('received')
 	print(phones)
-	#phone_info = json.load(phones)
-#	print(phone_info)
-#		return redirect(url_for('/'))
 
+	date = datetime.now()
+	status = 1
+
+
+	#assosciate with part data
+
+	#Get description/price/img path from db based on model
 
 	return app.make_response("200")
 

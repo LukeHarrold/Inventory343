@@ -2,7 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import app, db
 import configparser
-from flask import render_template
+from flask import render_template, url_for
+
 
 config = configparser.ConfigParser()
 configValues = config.read("config.ini")
@@ -20,11 +21,6 @@ if len(configValues) < 1:
 # app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config['swen-343-database']['uri']
 # db = SQLAlchemy(app)
-
-
-@app.route("/")
-def hello():
-    return render_template('layout.html')
 
 
 if __name__ == "__main__":

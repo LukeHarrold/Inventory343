@@ -1,19 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
 from __init__ import db
-import enum
 
 
-class statusEnum(enum.Enum):
-    NEW = "New"
-    BROKEN = "Broken"
-    REFURBISHED = "Refurbished"
-
-
-class phone(db.Model):
+class Phone(db.Model):
+    __tablename__ = 'phones'
     id  = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.Enum(statusEnum))
-    model = db.Column(db.Integer, db.ForeignKey('phonetype.id'))
+    status = db.Column(db.Integer)
+    model_id = db.Column(db.Integer, db.ForeignKey('phone_types.id'))
     saleDate = db.Column(db.DateTime)
     returnDate = db.Column(db.DateTime)
     refurbishedDate = db.Column(db.DateTime)

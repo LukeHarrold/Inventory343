@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
+
 
 
 def db_connect():
@@ -11,7 +13,8 @@ def db_connect():
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/swen-343-inventory.db'
+path = 'sqlite:////' + os.path.dirname(os.path.abspath(__file__)) + '/swen-343-inventory.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = path
 db = SQLAlchemy(app)
 
 # import the models *after* the db object is define

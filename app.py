@@ -14,5 +14,6 @@ def db_connect():
     return create_engine(URL(**settings.DATABASE))
 
 
+
 if __name__ == "__main__":
     app.run()

@@ -25,3 +25,4 @@ def receive_completed_phones():
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+

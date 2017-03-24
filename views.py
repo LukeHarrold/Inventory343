@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import app, db
 from flask import request
+from flask import render_template
 
 import json
 
@@ -14,7 +15,7 @@ def send_part_information(num_parts, part_type_id):
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template('layout.html')
 
 
 @app.route('/inventory/', methods=['POST'])

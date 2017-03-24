@@ -1,27 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import app, db
-import configparser
-from flask import render_template, url_for
-
-
-config = configparser.ConfigParser()
-configValues = config.read("config.ini")
-if len(configValues) < 1:
-    # Will add aditional items to the config file as neeeded.
-    config['swen-343-database'] = {}
-    config['swen-343-database']['uri'] = input('Enter the DB URI: ')
-    # config['swen-343-server'] = {}
-    # config['swen-343-server']['admin'] = {}
-    # config['swen-343-server']['admin']['username'] = input('Enter the desired server admin username:')
-    # config['swen-343-server']['admin']['password'] = input('Enter the desired server admin password:')
-    with open('config.ini', 'w') as configfile:
-        config.write(configfile)
-
-# app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = config['swen-343-database']['uri']
-# db = SQLAlchemy(app)
+from flask import render_template
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True)
+

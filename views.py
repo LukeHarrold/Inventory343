@@ -1,74 +1,67 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import app, db
-<<<<<<< HEAD
-from flask import request, jsonify, render_template
+from flask import request, jsonify, render_template, url_for, redirect
+import requests
 import random
-=======
-from flask import request
-from flask import render_template
 
 import json
->>>>>>> aea77d82a2024aa8b541418936e7db957e8cf595
 
-
-
-app = Flask(__name__)
 
 @app.route('/inventory/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):
 	return
 
 
-<<<<<<< HEAD
 @app.route('/')
-=======
-@app.route("/")
->>>>>>> aea77d82a2024aa8b541418936e7db957e8cf595
 def hello():
     return render_template('layout.html')
 
-
-<<<<<<< HEAD
+@app.route('/inventory/', methods=['GET', 'POST'])
 def stub_completed_phones():
 	#Get phone information here
-	num_phones = random.randint(1,300)
+	num_phones = random.randint(1,4)
 	phone_types = ['h', 'm', 'l', 'f']
-
-	battery = random.randint(1,1000)
-	memory = random.randint(1001,10000)
-	screen = randint(10001, 18000)
 
 	part_types = ['battery', 'screen', 'memory']
 	#need to get battery, screen, and memory part number from db
 	phones = []
 
 
-	for phone in num_phones:
+	for phone in range(1, num_phones):
+		battery = random.randint(1,1000)
+		memory = random.randint(1001,10000)
+		screen = random.randint(10001, 18000)
+
 		phone_info = {}
+		phone_info['id'] = phone
 		phone_info['model'] = random.choice(phone_types)
 		phone_info['battery'] = battery
 		phone_info['memory'] = memory
 		phone_info['screen'] = screen
 		phones.append(phone_info)
-	return jsonify(phones)
+	url = 'http://localhost:5000/inventory/us'
+	p = json.dumps(phones)
+	r = requests.post(url, data=p)
+	return r
 
 
-@app.route('/inventory/')
+@app.route('/inventory/us/', methods=['POST', 'GET'])
 def receive_completed_phones():
-	print('here')
-	phones = stub_completed_phones()
-	phone_info = json.loads(phones)
-	print(phone_info)
-	return redirect(url_for('/'))
-=======
-@app.route('/inventory/', methods=['POST'])
-def receive_completed_phones():
-	return
-
+	print('bb we rolling')
+	print(request.method)
+	if request.method == 'POST':
+		print("is a post*******************")
+		phones = request.get_json()
+		print(phones)
+		#phone_info = json.load(phones)
+	#	print(phone_info)
+#		return redirect(url_for('/'))
+	else:
+		print("why")
+	return redirect(url_for('hello'))
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
->>>>>>> aea77d82a2024aa8b541418936e7db957e8cf595

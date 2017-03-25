@@ -1,7 +1,67 @@
-<!doctype html>
+<!--Tommy DiMauro-->
 
+<!doctype html>
+<html>
 {% block body %}
-	Trying this shit out
-	<a href="{{'http://localhost:5000/inventory/mock'}}">load phones</a>
+
+<!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
+	<table style="width:100%">
+	<font size="+2"><b>Phone Table</b></font>
+  <tr>
+    <th>Phone Type</th>
+    <th>Price</th> 
+    <th>New In Stock</th> 
+    <th>Referbished In Stock</th> 
+    <th>Broken In Stock</th> 
+  </tr>
+  {% for n in table1data %}
+  <tr>
+    <td>{{n[0]}}</td>
+    <td>{{n[1]}}</td> 
+    <td>{{n[2]}}</td> 
+    <td>{{n[3]}}</td> 
+    <td>{{n[4]}}</td> 
+  </tr>
+ {% endfor %}
+ </table>
+
+<!--A table showing how many available parts there are for each phone type-->
+	<table style="width:100%">
+	<font size="+2"><b>Parts Table</b></font>
+  <tr>
+    <th>Phone Type</th>
+    <th>Body</th> 
+    <th>Screen</th> 
+    <th>Battery</th> 
+  </tr>
+  {% for n in table2data %}
+  <tr>
+    <td>{{n[0]}}</td>
+    <td>{{n[1]}}</td> 
+    <td>{{n[2]}}</td> 
+    <td>{{n[3]}}</td> 
+    <td>{{n[4]}}</td> 
+  </tr>
+  {% endfor %}
+	</table>
+
+  <!--A table showing all the available phones-->
+  <table style="width:100%">
+  <font size="+2"><b>Available Phones</b></font>
+  <tr>
+  <tr>
+    <th>Phone Type</th>
+    <th>Serial Number</th> 
+    <th>Phone Status</th> 
+  </tr>
+  {% for n in table3data %}
+  <tr>
+    <th>{{n[0]}}</th>
+    <th>{{n[1]}}</th> 
+    <th>{{n[2]}}</th> 
+  </tr>
+  {% endfor %}
+  </table>
+
 {% endblock %}
 </html>

@@ -13,9 +13,9 @@ def send_part_information(num_parts, part_type_id):
 	return
 
 
-@app.route('/')
-def hello():
-    return render_template('layout.html')
+#@app.route('/')
+#def hello():
+#    return render_template('layout.html')
 
 @app.route('/inventory/mock', methods=['GET', 'POST'])
 def stub_completed_phones():

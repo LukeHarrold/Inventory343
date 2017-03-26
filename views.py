@@ -101,4 +101,5 @@ def holding_sales_hand_through_indexing(phoneModelId):
 	pass
 def mark_as_returned(phoneId):
 	pass
-def get_phone_by_id(phoneId)
+def get_phone_by_id(phoneId):
+	pass

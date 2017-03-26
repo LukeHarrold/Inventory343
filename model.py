@@ -6,18 +6,15 @@ from __init__ import db
 class Part(db.Model):
     __tablename__ = 'parts'
     id = db.Column(db.Integer, primary_key=True)
-    parttype_id = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
-    price = db.Column(db.Float)
-    startDate = db.Column(db.DateTime)
-    endDate = db.Column(db.DateTime)
-    deletedAt = db.Column(db.DateTime)
+    modelType = db.Column(db.String(80))
+    defective = db.Column(db.Boolean)
+    partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
 
- 
 
-    def __init__(self, partType, price):
-        self.partType = partType
-        self.price = price
-        self.startDate = datetime.utcnow()
+    def __init__(self, partType, modelType):
+        self.partTypeId = partType
+        self.modelType = modelType
+        self.defective = False
 
 
 
@@ -36,12 +33,15 @@ class Phone(db.Model):
     returnDate = db.Column(db.DateTime)
     refurbishedDate = db.Column(db.DateTime)
     parts = db.relationship('Part', secondary=phoneParts,
-        backref=db.backref('phones', lazy='dynamic'))
+        backref=db.backref('parts', lazy='dynamic'))
 
     
     def __init__(self, status, model):
         self.status = status
-        self.model = model
+        self.modelId = model
+        self.saleDate = None
+        self.returnDate = None
+        self.refurbishedDate = None
 
 
 class PhoneType(db.Model):
@@ -79,7 +79,8 @@ class PartType(db.Model):
     startDate = db.Column(db.DateTime)
     endDate = db.Column(db.DateTime)
     deletedAt = db.Column(db.DateTime)
-    parts = db.relationship('Part', backref='part_types', lazy='dynamic')
+    parts = db.relationship('Part', backref='part_type', lazy='dynamic')
+
     # phoneTypes = db.relationship('PhoneType', backref='part_types', lazy='dynamic')
     batteryPart = db.relationship('PhoneType', backref='battery', lazy='dynamic', foreign_keys='[PhoneType.batteryTypeId]')
     screenPart = db.relationship('PhoneType', backref='screen', lazy='dynamic', foreign_keys='[PhoneType.screenTypeId]')

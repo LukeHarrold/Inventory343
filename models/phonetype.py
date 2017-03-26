@@ -7,7 +7,7 @@ from __init__ import db
 class PhoneType(db.Model):
     __tablename__ = 'phone_types'
     id = db.Column(db.Integer, primary_key=True)
-    phoneType = db.Column(db.Integer)
+    phoneType = db.Column(db.String(80))
     screenType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
     batteryType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
     memoryType = db.Column(db.Integer, db.ForeignKey('part_types.id'))
@@ -25,4 +25,4 @@ class PhoneType(db.Model):
         self.description = description
         self.imagePath = imagePath
         self.price = price
-        self.saleDate = datetime.utcnow()
+

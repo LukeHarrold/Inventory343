@@ -70,26 +70,22 @@ def receive_completed_phones():
 	#phone_info = json.load(phones)
 #	print(phone_info)
 #		return redirect(url_for('/'))
-
-
 	return app.make_response("200")
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders_mock():
-    orderData = request.get_json(force=True)
-    print(orderData)
-    r = requests.post('http://127.0.0.1:5000/inventory/phones/order', data = json.dumps({"key": "test data"}))
-    print(r)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    possibilities = [[200, True], [400, False]]
+    whatHappened = random.choice(possibilities)
+    return json.dumps({'success':whatHappened[1]}), whatHappened[0]
+    
 
 
 @app.route('/inventory/phones/order', methods=['POST'])
 def phone_orders():
-    print("HEYYYYYOOOOOO")
     data = request.get_json(force=True)
-    print(data)
-
-    return app.make_response("junk")
+    r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
+    print(r.status_code)
+    return app.make_response((r.content, r.status_code, {'Content-Type': 'application/json'}))
 
 
 def send_broken_phones(phoneRow):

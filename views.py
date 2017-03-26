@@ -10,7 +10,21 @@ import json
 
 @app.route('/inventory/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):
-	return
+	phone_models = ["h", "l", "m", "f"]
+	part_types = ["battery", "screen", "memory"]
+	parts = []
+	url = "http://127.0.0.1:5000/inventory/{}/{}".format(num_parts, part_type_id)
+	for part in range(int(num_parts)):
+		part_row = {}
+		part_row["id"] = random.randint(1,1000) #hackerman
+		part_row["model"] = random.choice(phone_models)
+		part_row["part_type"] = part_type_id
+		part_row["defective"] = False
+		part_row["part_type"] = random.choice(part_types)
+		parts.append(part_row)
+	print(json.dumps(parts))
+	#r = requests.get(url, data=json.dumps(parts))
+	return json.dumps(parts)
 
 
 #@app.route('/')
@@ -32,6 +46,7 @@ def stub_completed_phones():
 		battery = random.randint(1,1000)
 		memory = random.randint(1001,10000)
 		screen = random.randint(10001, 18000)
+		
 
 		phone_info = {}
 		phone_info['id'] = phone

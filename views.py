@@ -122,21 +122,38 @@ def create_new_phones(orderQuantity, phoneModelId):
 	r = requests.post("http://127.0.0.1/manufacturing/order", orderQuantity, phoneModelId)
 	return json.dumps({'success':True}), 200, {'ContentType' : 'application/json'}
 
-@app.route('inventory/models/all', methods=["GET"])
+@app.route('/inventory/models/all', methods=["GET"])
 def all_phone_models():
 	phone_models = ['h', 'm', 'l', 'f']
 	all_models = []
 	for model in phone_models:
-		all_models.append({"id":phone_models.indexOf(model), "model":model, "description":model, "price":25*phone_models.indexOf(model)})
+		all_models.append({"id":phone_models.index(model), "model":model, "description":model, "price":25*phone_models.index(model)})
 
-	return json.dump(all_models)
+	return json.dumps(all_models)
 
-@app.route('inventory/models/<phoneModelId>', methods=['GET'])
+@app.route('/inventory/models/<phoneModelId>', methods=['GET'])
 def holding_sales_hand_through_indexing(phoneModelId):
 	phone_models = ['h', 'm', 'l', 'f']
-	return json.dump({"id": phoneModelId, "model" : phone_models[phoneModelId], "description": phone_models[phoneModelId], "price":25*phoneModelId})
-	
+	return json.dumps({"id": phoneModelId, "model" : phone_models[int(phoneModelId)%4], "description": phone_models[int(phoneModelId)%4], "price":25*int(phoneModelId),
+		"memory" : random.randint(1,1000),
+		"screen" : random.randint(1,1000),
+		"keyboard" : random.randint(1,1000)})
+
+
+@app.route('/inventory/phone/return?phoneid=<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
-	pass
+
+	return json.dumps({'success':True}, 200, {'ContentType' : 'application/json'})
+
+@app.route('/inventory/phones/<phoneId>', methods=['GET'])	
 def get_phone_by_id(phoneId):
-	pass
+	phone_models = ['h', 'm', 'l', 'f']
+	statuses = ['New', 'Broken', 'Refurbished']
+	phone = {}
+	phone['id'] = phoneId
+	phone['model'] = random.choice(phone_models)
+	phone['status'] =  random.choice(statuses)
+	phone['screen'] = random.randint(1,1000)
+	phone['memory'] = random.randint(1,1000)
+	phone['keyboard'] = random.randint(1,1000)
+	return json.dumps(phone)

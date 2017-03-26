@@ -157,3 +157,4 @@ def get_phone_by_id(phoneId):
 	phone['memory'] = random.randint(1,1000)
 	phone['keyboard'] = random.randint(1,1000)
 	return json.dumps(phone)
+

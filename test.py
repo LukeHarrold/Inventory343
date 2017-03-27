@@ -2,6 +2,7 @@ from __init__ import app, db
 import unittest
 import json
 import requests
+import random
 
 class apiTest(unittest.TestCase):
 
@@ -10,56 +11,60 @@ class apiTest(unittest.TestCase):
 
     #Manufacturing api
 
-    def test(self):
-        resp = self.app.get('/')
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.headers["Content-Type"], "text/html; charset=utf-8")
 
     #/inventory/{numParts}/{partTypeId} --GET
     def test_send_parts_info(self):
-        resp = self.app.get('/')
-
+        numParts = random.randint(1,3)
+        partTypeId = random.randint(1,3)
+        resp = self.app.get('/inventory/get-parts/{}/{}'.format(numParts, partTypeId))
+        
         self.assertEqual(resp.status_code, 200)
-
+        
 
     #/inventory/ --POST
     def test_recieve_completed_phones(self):
         resp = self.app.get('/inventory/mock')
-        print(resp.data)
-        print(resp.headers)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.headers['ContentType'], 'application/json')
+    
+        '''
+    def test_phone_order(self):
+        test_json = {"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}
+        resp = self.app.get('/inventory/phones/order', data=test_json)
+        self.assertEqual(resp.status_code, 200)
 
-    #/inventory/send --POST
-    def test_send_phone_to_be_refurbished(self):
-        pass
+    '''
+    def test_send_broken_phone(self):
+        test_json = '{"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}'
+        resp = self.app.get('/inventory/send/{}'.format(test_json))
+        self.assertEqual(resp.status_code, 200)
 
-    #/inventory/ --POST
-    def test_recieve_refurbished_phone(self):
-        pass
+        '''
+    def test_recieved_fixed_phone(self):
+        test_json = '{"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}'
+        resp = self.app.post('/inventory/{}/'.format(test_json))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers['ContentType'], 'application/json')
+    '''
 
+    def test_all_phone_models(self):
+        resp = self.app.get('/inventory/models/all')
+        self.assertEqual(resp.status_code, 200)
 
-    #Sales api
+    def test_holding_sales_hand_through_indexing_lol(self):
+        phoneModelId = random.randint(1,10)
+        resp = self.app.get('/inventory/models/{}'.format(phoneModelId))
+        self.assertEqual(resp.status_code, 200)
 
-    #/inventory/phones/order --POST
-    def test_phone_orders(self):
-        pass
-
-    #/inventory/models/all --GET
-    def test_get_all_models(self):
-        pass
-
-    #/inventory/models/{phoneModelId} --GET
-    def test_get_specific_model(self):
-        pass
-
-    #/inventory/phone/return?phoneid={phoneId} --POST
     def test_mark_as_return(self):
-        pass
+        phoneId = random.randint(1,10)
+        resp = self.app.get('/inventory/phone/return/{}'.format(phoneId))
+        self.assertEqual(resp.status_code, 200)
 
-    #/inventory/phones/{phoneId} --GET
-    def test_get_phone(self):
-        pass
-
+    def test_get_phone_by_id(self):
+        phoneId = random.randint(1,10)
+        resp = self.app.get('/inventory/phones/{}'.format(phoneId))
+        self.assertEqual(resp.status_code, 200)
+        
 if __name__ == "__main__":
     unittest.main()

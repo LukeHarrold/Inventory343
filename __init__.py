@@ -12,15 +12,17 @@ def db_connect():
 
 
 app = Flask(__name__)
-path = 'sqlite:////' + os.path.dirname(os.path.abspath(__file__)) + '/swen-343-inventory.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True #removes annoying message
+path = 'sqlite:///' + os.path.dirname(os.path.abspath(__file__)) + '/swen-343-inventory.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = path
 db = SQLAlchemy(app)
 
 # import the models *after* the db object is define
 
-from models import parttype
-from models import phonetype
-from models import phone
-from models import part
-from models import phonepart
+# from models import parttype
+# from models import phonetype
+# from models import phone
+# from models import part
+# from models import phonepart
+from model import *
 import views

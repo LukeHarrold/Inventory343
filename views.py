@@ -49,6 +49,47 @@ def send_part_information(num_parts, part_type_id):
 	return json.dumps(parts)
 
 
+
+@app.route('/inventory/phones/ordermock', methods=['POST'])
+def phone_orders_mock():
+    possibilities = [[200, True], [400, False]]
+    whatHappened = random.choice(possibilities)
+    return json.dumps({'success':whatHappened[1]}), whatHappened[0]
+   
+''' 
+Assuming this may be used once manufacturing has endpoints?
+@app.route('/inventory/phones/order', methods=["POST"])
+def create_new_phones(orderQuantity, phoneModelId):
+	r = requests.post("http://127.0.0.1/manufacturing/order", orderQuantity, phoneModelId)
+	return json.dumps({'success':True}), 200, {'ContentType' : 'application/json'}
+'''
+
+@app.route('/inventory/phones/order', methods=['GET', 'POST'])
+def phone_orders():
+	#None of this can be used, we have to wait for manufacturing and sales
+    #data = request.get_json(force=True)
+    #r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
+    #print(r.status_code)
+    return app.make_response((r.content, '200', {'Content-Type': 'application/json'}))
+
+@app.route('/inventory/send/<phoneRow>', methods=['GET', 'POST'])
+def send_broken_phones(phoneRow):
+	'''
+	Send phone to manufacturing to be refurbished.
+	'''
+	phone_models = ['h', 'm', 'l', 'f']
+	phone={}
+	phone["id"] = random.randint(1,1000)
+	phone["model"] = random.choice(phone_models)
+	phone["status"] = "Broken"
+	phone["screen"] = random.randint(1,1000)
+	phone["memory"] = random.randint(1,1000)
+	phone["keyboard"] = random.randint(1,1000)
+	data=json.dumps(phone)
+	return app.make_response((data, '200', {'Content-Type': 'application/json'}))
+	#return json.dumps({'success':True}, 200, {'ContentType':'application/json'})
+
+
 @app.route('/inventory/mock', methods=['GET', 'POST'])
 def stub_completed_phones():
 	#Get phone information here
@@ -73,49 +114,15 @@ def stub_completed_phones():
 		phone_info['screen'] = screen
 		phones.append(phone_info)
 	url = 'http://127.0.0.1:5000/inventory'
-	print('original')
-	print(json.dumps(phones))
 	r = requests.post(url, data=json.dumps(phones))
 	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
-
-
-@app.route('/inventory/phones/ordermock', methods=['POST'])
-def phone_orders_mock():
-    possibilities = [[200, True], [400, False]]
-    whatHappened = random.choice(possibilities)
-    return json.dumps({'success':whatHappened[1]}), whatHappened[0]
-    
-
-
-@app.route('/inventory/phones/order', methods=['POST'])
-def phone_orders():
-    data = request.get_json(force=True)
-    r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
-    print(r.status_code)
-    return app.make_response((r.content, r.status_code, {'Content-Type': 'application/json'}))
-
-@app.route('/inventory/send', methods=['POST'])
-def send_broken_phones(phoneRow):
-	'''
-	Send phone to manufacturing to be refurbished.
-	'''
-	phone_models = ['h', 'm', 'l', 'f']
-	phone={}
-	phone["id"] = random.randint(1,1000)
-	phone["model"] = random.choice(phone_models)
-	phone["status"] = "Broken"
-	phone["screen"] = random.randint(1,1000)
-	phone["memory"] = random.randint(1,1000)
-	phone["keyboard"] = random.randint(1,1000)
-	r = requests.post("http://127.0.0.1/inventory", data=json.dumps(phone))
-	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
-
-@app.route('/inventory/', methods=['POST'])
-def receive_fixed_phones(phoneRow):
+@app.route('/inventory/<data>/', methods=["POST"])
+def receive_fixed_phones(data):
 	'''
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
+	print("getting called")
 	num_phones = random.randint(1,10)
 	phone_models = ['h', 'm', 'l', 'f']
 	phones=[]
@@ -131,13 +138,6 @@ def receive_fixed_phones(phoneRow):
 	r = requests.post("http://127.0.0.1/inventory", data=json.dumps(phones))
 	return json.dumps({'success':True}), 200, {'ContentType' : "application/json"}
 
-@app.route('/inventory/phones/order', methods=['POST'])
-def create_new_phones(orderQuantity, phoneModelId):
-	'''
-	Sends a quantity and type of phone to be created
-	'''
-	r = requests.post("http://127.0.0.1/manufacturing/order", orderQuantity, phoneModelId)
-	return json.dumps({'success':True}), 200, {'ContentType' : 'application/json'}
 
 @app.route('/inventory/models/all', methods=["GET"])
 def all_phone_models():
@@ -168,7 +168,7 @@ def mark_as_returned(phoneId):
 	'''
 	Marks a specific phone as “returned”
 	'''
-	return json.dumps({'success':True}, 200, {'ContentType' : 'application/json'})
+	return json.dumps(({'success':True}, 200, {'ContentType' : 'application/json'}))
 
 @app.route('/inventory/phones/<phoneId>', methods=['GET'])	
 def get_phone_by_id(phoneId):

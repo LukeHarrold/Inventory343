@@ -5,6 +5,7 @@ from flask import request, jsonify, render_template, url_for, redirect
 import requests
 import random
 import datetime
+from models import *
 
 import json
 '''
@@ -22,22 +23,30 @@ f = flip phone
 part model options:
 1 = screen
 2 = battery
-3 = memory
+3 = case
 '''
 
 @app.route('/')
 def hello():
     return render_template('layout.html')
 
-@app.route('/inventory/<num_parts>/<part_type_id>', methods=['GET'])
+@app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):
-	return
+	print(num_parts, part_type_id)
+	parts = part.Part.query.all()
 
-@app.route('/inventory/get_parts/mock', methods=['GET'])
+
+	return render_template('basic_display.html', data=parts)
+
+@app.route('/inventory/get-parts/mock', methods=['GET'])
 def stub_part_information():
 	num_parts = random.randint(1, 30)
+	part_type_id = random.randint(1, 3)
 
-	return
+	temp = url_for('send_part_information', num_parts=num_parts, part_type_id=part_type_id)
+	url = 'http://127.0.0.1:5000' + str(temp)
+	r = requests.get(url)
+	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/inventory/mock', methods=['GET', 'POST'])
 def stub_completed_phones():

@@ -5,7 +5,7 @@ from flask import render_template
 
 
 
-db.create_all()
+#db.create_all()
 
 if __name__ == "__main__":
     app.run(threaded=True)

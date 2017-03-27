@@ -12,10 +12,8 @@ def db_connect():
 
 
 app = Flask(__name__)
-
-print(os.path.abspath)
-new_path = 'sqlite////' + str(os.getcwd()) + '/inventory.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = new_path
+path = 'sqlite:////' + os.path.dirname(os.path.abspath(__file__)) + '/swen-343-inventory.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = path
 db = SQLAlchemy(app)
 
 # import the models *after* the db object is define

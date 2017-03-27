@@ -18,7 +18,7 @@ model options:
 h = high
 m = medium
 l = low
-f = flip phone
+r = retro
 
 part model options:
 1 = screen
@@ -53,7 +53,7 @@ def send_part_information(num_parts, part_type_id):
 def stub_completed_phones():
 	#Get phone information here
 	num_phones = random.randint(1,10)
-	phone_types = ['h', 'm', 'l', 'f']
+	phone_types = ['h', 'm', 'l', 'r']
 
 	part_types = ['battery', 'screen', 'memory']
 	#need to get battery, screen, and memory part number from db
@@ -79,28 +79,6 @@ def stub_completed_phones():
 	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 
-@app.route('/inventory', methods=['POST'])
-def receive_completed_phones():
-	'''
-	Receive the completed phones to be added into the database
-	'''
-
-	phones = request.get_json(force=True)
-	print('received')
-	print(phones)
-
-	#date = datetime.now()
-	status = 1
-
-
-	#assosciate with part data
-
-	#Get description/price/img path from db based on model
-
-	#phone_info = json.load(phones)
-#	print(phone_info)
-#		return redirect(url_for('/'))
-	return app.make_response("200")
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders_mock():
@@ -136,7 +114,7 @@ def send_broken_phones(phoneRow):
 @app.route('/inventory/', methods=['POST'])
 def receive_fixed_phones(phoneRow):
 	'''
-	Receives the “fixed” refurbished phones from manufacturing with replaced parts
+	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
 	num_phones = random.randint(1,10)
 	phone_models = ['h', 'm', 'l', 'f']
@@ -185,7 +163,7 @@ def holding_sales_hand_through_indexing(phoneModelId):
 		"keyboard" : random.randint(1,1000)})
 
 
-@app.route('/inventory/phone/return?phoneid=<phoneId>', methods=['GET'])	
+@app.route('/inventory/phone/return/<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
 	'''
 	Marks a specific phone as “returned”

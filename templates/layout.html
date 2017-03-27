@@ -2,6 +2,34 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styling.css') }}">
 {% block body %}
 
+
+<div class=btn-set>
+  <form action="/inventory/get-parts/5/1" method="GET">
+    <button>Send Parts</button>
+  </form>
+  <form action="/inventory" method="POST">
+    <button>Receive Phones</button>
+  </form>
+  <form action="/inventory/send" method="GET">
+    <button type="submit">Send Broken Phones</button>
+  </form>
+  <form action="/inventory/phones/order" method="GET">
+    <button type="submit">Create New Phones</button>
+  </form>
+  <form action="/inventory/models/all" method="GET">
+    <button type="submit">List All Models</button>
+  </form>
+  <form action="/inventory/models/2" method="GET">
+    <button>Display Specific Model</button>
+  </form>
+  <form action="/inventory/phone/return/1" method="POST">
+    <button>Mark Returned Phone</button>
+  </form>
+  <form action="/inventory/phones/1" method="GET">
+    <button>Return Specific Phone</button>
+  </form>
+</div>
+
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
 	<table style="width:100%">
 	<div class=t-h>Phone Table</div>
@@ -14,11 +42,9 @@
   </tr>
   {% for n in table1data %}
   <tr>
-    <td>{{n[0]}}</td>
-    <td>{{n[1]}}</td> 
-    <td>{{n[2]}}</td> 
-    <td>{{n[3]}}</td> 
-    <td>{{n[4]}}</td> 
+    {% for data in n %}
+    <td>{{data}}</td>
+    {% endfor %}
   </tr>
  {% endfor %}
  </table>
@@ -34,11 +60,9 @@
   </tr>
   {% for n in table2data %}
   <tr>
-    <td>{{n[0]}}</td>
-    <td>{{n[1]}}</td> 
-    <td>{{n[2]}}</td> 
-    <td>{{n[3]}}</td> 
-    <td>{{n[4]}}</td> 
+    {% for data in n %}
+    <td>{{data}}</td>
+    {% endfor %}
   </tr>
   {% endfor %}
 	</table>
@@ -54,9 +78,9 @@
   </tr>
   {% for n in table3data %}
   <tr>
-    <td>{{n[0]}}</td>
-    <td>{{n[1]}}</td> 
-    <td>{{n[2]}}</td> 
+    {% for data in n %}
+    <td>{{data}}</td>
+    {% endfor %}
   </tr>
   {% endfor %}
   </table>

@@ -15,3 +15,10 @@ table {
   font-size:20px;
   font-weight: bold;
 }
+
+.btn-set{
+  float left;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+}

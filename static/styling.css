@@ -1,0 +1,17 @@
+th, td {
+  border: 1px solid black;
+}
+
+td {
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.t-h {
+  font-size:20px;
+  font-weight: bold;
+}

@@ -1,16 +1,10 @@
-<!--Tommy DiMauro-->
-
 <!doctype html>
-<html>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styling.css') }}">
 {% block body %}
-<<<<<<< HEAD
-	<a href="{{'http://localhost:5000/inventory/mock'}}">load phones</a>
-	<a href="{{'http://localhost:5000/inventory/get-parts/mock'}}">ask for parts</a>
-=======
 
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
 	<table style="width:100%">
-	<font size="+2"><b>Phone Table</b></font>
+	<div class=t-h>Phone Table</div>
   <tr>
     <th>Phone Type</th>
     <th>Price</th> 
@@ -31,7 +25,7 @@
 
 <!--A table showing how many available parts there are for each phone type-->
 	<table style="width:100%">
-	<font size="+2"><b>Parts Table</b></font>
+	<div class=t-h>Parts Table</div>
   <tr>
     <th>Phone Type</th>
     <th>Body</th> 
@@ -51,7 +45,7 @@
 
   <!--A table showing all the available phones-->
   <table style="width:100%">
-  <font size="+2"><b>Available Phones</b></font>
+  <div class=t-h>Available Phones</div>
   <tr>
   <tr>
     <th>Phone Type</th>
@@ -60,13 +54,12 @@
   </tr>
   {% for n in table3data %}
   <tr>
-    <th>{{n[0]}}</th>
-    <th>{{n[1]}}</th> 
-    <th>{{n[2]}}</th> 
+    <td>{{n[0]}}</td>
+    <td>{{n[1]}}</td> 
+    <td>{{n[2]}}</td> 
   </tr>
   {% endfor %}
   </table>
 
->>>>>>> e56798df1da22647359910088f71b1b63beff654
 {% endblock %}
 </html>

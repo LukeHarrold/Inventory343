@@ -8,6 +8,7 @@ class Part(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     modelType = db.Column(db.String(80))
     defective = db.Column(db.Boolean)
+    used = db.Column(db.Boolean)
     partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
 
 
@@ -15,6 +16,7 @@ class Part(db.Model):
         self.partTypeId = partType
         self.modelType = modelType
         self.defective = False
+        self.used = False
 
 
 

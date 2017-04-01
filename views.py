@@ -5,7 +5,8 @@ from flask import request, jsonify, render_template, url_for, redirect
 import requests
 import random
 import datetime
-from models import *
+import re
+from model import Part, Phone, PhoneType
 
 import json
 '''
@@ -32,29 +33,19 @@ def send_part_information(num_parts, part_type_id):
 	'''
 	Sends the part information for the number and type of part specified.
 	'''
-	phone_models = ["h", "l", "m", "f"]
-	part_types = ["battery", "screen", "memory"]
-	parts = []
-	url = "http://127.0.0.1:5000/inventory/{}/{}".format(num_parts, part_type_id)
-	for part in range(int(num_parts)):
-		part_row = {}
-		part_row["id"] = random.randint(1,1000) 
-		part_row["model"] = random.choice(phone_models)
-		part_row["part_type"] = part_type_id
-		part_row["defective"] = False
-		part_row["part_type"] = random.choice(part_types)
-		parts.append(part_row)
-	print(json.dumps(parts))
-	#r = requests.get(url, data=json.dumps(parts))
-	return json.dumps(parts)
+	output = []
+	parts_to_send = Part.query.filter_by( partTypeId=part_type_id and Part.phoneId == None ).all()
+	for part_to_send in parts_to_send:
+		output.append( to_json_like_string(part_to_send))
+	return jsonify(output)
 
 
 
 @app.route('/inventory/phones/ordermock', methods=['POST'])
 def phone_orders_mock():
-    possibilities = [[200, True], [400, False]]
-    whatHappened = random.choice(possibilities)
-    return json.dumps({'success':whatHappened[1]}), whatHappened[0]
+	possibilities = [[200, True], [400, False]]
+	whatHappened = random.choice(possibilities)
+	return jsonify({'success':whatHappened[1]}), whatHappened[0]
    
 ''' 
 Assuming this may be used once manufacturing has endpoints?
@@ -67,30 +58,27 @@ def create_new_phones(orderQuantity, phoneModelId):
 @app.route('/inventory/phones/order', methods=['GET', 'POST'])
 def phone_orders():
 	#None of this can be used, we have to wait for manufacturing and sales
-    #data = request.get_json(force=True)
-    #r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
-    #print(r.status_code)
-    return app.make_response((r.content, '200', {'Content-Type': 'application/json'}))
+	#data = request.get_json(force=True)
+	#r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
+	#print(r.status_code)
+	return app.make_response((r.content, '200', {'Content-Type': 'application/json'}))
 
-@app.route('/inventory/send/<phoneRow>', methods=['GET', 'POST'])
-def send_broken_phones(phoneRow):
+@app.route('/inventory/send/', methods=['GET'])
+def send_broken_phones():
 	'''
 	Send phone to manufacturing to be refurbished.
 	'''
-	phone_models = ['h', 'm', 'l', 'f']
-	phone={}
-	phone["id"] = random.randint(1,1000)
-	phone["model"] = random.choice(phone_models)
-	phone["status"] = "Broken"
-	phone["screen"] = random.randint(1,1000)
-	phone["memory"] = random.randint(1,1000)
-	phone["keyboard"] = random.randint(1,1000)
-	data=json.dumps(phone)
-	return app.make_response((data, '200', {'Content-Type': 'application/json'}))
+	output = []
+	phones_to_send = Phone.query.filter_by(status="Broken")
+	for phone_to_send in phones_to_send:
+		output.append(to_json_like_string(phone_to_send))
+	print(output)
+	return jsonify((output))
+	
 	#return json.dumps({'success':True}, 200, {'ContentType':'application/json'})
 
 
-@app.route('/inventory/mock', methods=['GET', 'POST'])
+@app.route('/inventory/mock', methods=['POST'])
 def stub_completed_phones():
 	#Get phone information here
 	num_phones = random.randint(1,10)
@@ -144,30 +132,29 @@ def all_phone_models():
 	'''
 	Returns a list of all the models in the inventory
 	'''
-	phone_models = ['h', 'm', 'l', 'f']
-	all_models = []
-	for model in phone_models:
-		all_models.append({"id":phone_models.index(model), "model":model, "description":model, "price":25*phone_models.index(model)})
-
-	return json.dumps(all_models)
+	all_models = PhoneType.query.all()
+	output = []
+	for model in all_models:
+		output.append(to_json_like_string(model))
+	return jsonify(output)
 
 @app.route('/inventory/models/<phoneModelId>', methods=['GET'])
 def holding_sales_hand_through_indexing(phoneModelId):
 	'''
 	Returns a specific type of phone
 	'''
-	phone_models = ['h', 'm', 'l', 'f']
-	return json.dumps({"id": phoneModelId, "model" : phone_models[int(phoneModelId)%4], "description": phone_models[int(phoneModelId)%4], "price":25*int(phoneModelId),
-		"memory" : random.randint(1,1000),
-		"screen" : random.randint(1,1000),
-		"keyboard" : random.randint(1,1000)})
-
+	phoneModel = PhoneType.query.filter( PhoneType.id==phoneModelId ).first()
+	output = to_json_like_string(phoneModel)
+	return jsonify(output)
 
 @app.route('/inventory/phone/return/<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
 	'''
 	Marks a specific phone as “returned”
 	'''
+	returned_phone = Phone.query.filter(Phone.id==phoneId).first()
+	returned_phone.returnDate = datetime.datetime.now()
+	db.session.commit()
 	return json.dumps(({'success':True}, 200, {'ContentType' : 'application/json'}))
 
 @app.route('/inventory/phones/<phoneId>', methods=['GET'])	
@@ -175,6 +162,11 @@ def get_phone_by_id(phoneId):
 	'''
 	Returns a specific phone based on its uid, or serial number
 	'''
+
+	phone_to_send = Phone.query.filter(Phone.id==phoneId).first()
+	output = to_json_like_string(phone_to_send)
+	return jsonify((output))
+
 	phone_models = ['h', 'm', 'l', 'f']
 	statuses = ['New', 'Broken', 'Refurbished']
 	phone = {}
@@ -185,4 +177,19 @@ def get_phone_by_id(phoneId):
 	phone['memory'] = random.randint(1,1000)
 	phone['keyboard'] = random.randint(1,1000)
 	return json.dumps(phone)
+
+def to_json_like_string(model_in):
+	""" Returns a JSON representation of an SQLAlchemy-backed object
+	"""
+	json_in = {}
+	json_in['fields'] = {}
+	json_in['pk'] = getattr(model_in, 'id')
+
+	for col in model_in._sa_class_manager.mapper.mapped_table.columns:
+		if isinstance(getattr(model_in, col.name), datetime.datetime):
+			json_in['fields'][col.name] = getattr(model_in, col.name).strftime("%m/%d/%Y")
+		else:
+			json_in['fields'][col.name] = getattr(model_in, col.name)
+
+	return ([json_in])
 

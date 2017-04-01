@@ -6,24 +6,26 @@ from __init__ import db
 class Part(db.Model):
     __tablename__ = 'parts'
     id = db.Column(db.Integer, primary_key=True)
-    modelType = db.Column(db.String(80))
+    modelType = db.Column(db.Integer, db.ForeignKey('phone_types.id'))
     defective = db.Column(db.Boolean)
     used = db.Column(db.Boolean)
     partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
-
+    phoneId = db.Column(db.Integer, db.ForeignKey('phones.id'))
 
     def __init__(self, partType, modelType):
         self.partTypeId = partType
         self.modelType = modelType
         self.defective = False
         self.used = False
+        self.phoneId = phoneId
 
 
-
-phoneParts = db.Table('phone_parts',
-    db.Column('phone_id', db.Integer, db.ForeignKey('phones.id')),
-    db.Column('part_id', db.Integer, db.ForeignKey('parts.id'))
-)
+### EXPERIMENTAL ###
+# to restore to previous schema, remove line 13 and comment in lines 39 and 40
+#phoneParts = db.Table('phone_parts',
+#    db.Column('phone_id', db.Integer, db.ForeignKey('phones.id')),
+#    db.Column('part_id', db.Integer, db.ForeignKey('parts.id'))
+#)
 
 
 class Phone(db.Model):
@@ -34,8 +36,8 @@ class Phone(db.Model):
     saleDate = db.Column(db.DateTime)
     returnDate = db.Column(db.DateTime)
     refurbishedDate = db.Column(db.DateTime)
-    parts = db.relationship('Part', secondary=phoneParts,
-        backref=db.backref('parts', lazy='dynamic'))
+    #parts = db.relationship('Part', secondary=phoneParts,
+    #    backref=db.backref('parts', lazy='dynamic'))
 
     
     def __init__(self, status, model):

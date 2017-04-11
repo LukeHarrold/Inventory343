@@ -9,24 +9,6 @@ import re
 from model import Part, Phone, PhoneType
 
 import json
-'''
-status options:
-1 = new
-2 = broken
-3 = refurbished
-
-model options:
-h = high
-m = medium
-l = low
-r = retro
-
-part model options:
-1 = screen
-2 = battery
-3 = case
-'''
-
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):

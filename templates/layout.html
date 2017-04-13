@@ -4,33 +4,6 @@
 {% block body %}
 
 
-<div class=btn-set>
-  <form action="/inventory/get-parts/5/1" method="GET">
-    <button>Send Parts</button>
-  </form>
-  <form action="/inventory/mock" method="POST">
-    <button>Receive Phones</button>
-  </form>
-  <form action="/inventory/send/1" method="POST">
-    <button>Send Broken Phones</button>
-  </form>
-  <form action="/inventory/phones/ordermock" method="POST">
-    <button>Create New Phones</button>
-  </form>
-  <form action="/inventory/models/all" method="GET">
-    <button>List All Models</button>
-  </form>
-  <form action="/inventory/models/2" method="GET">
-    <button>Display Specific Model</button>
-  </form>
-  <form action="/inventory/phone/return/1" method="GET">
-    <button>Mark Returned Phone</button>
-  </form>
-  <form action="/inventory/phones/1" method="GET">
-    <button>Get Specific Phone</button>
-  </form>
-</div>
-
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
 <table style="width:100%">
   <div class=t-h>Phone Table</div>

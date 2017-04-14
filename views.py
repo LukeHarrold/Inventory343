@@ -7,25 +7,21 @@ import random
 import datetime
 import re
 from model import Part, Phone, PhoneType
+import csv
 
 import json
-'''
-status options:
-1 = new
-2 = broken
-3 = refurbished
 
-model options:
-h = high
-m = medium
-l = low
-r = retro
+@app.route("/")
+def landing():
+	dummyphones = open('DummyData/dummyphonetable.csv')
+	dummyparts = open('DummyData/dummypartstable.csv')
+	dummyavailable = open('DummyData/dummyavailablephones.csv')
 
-part model options:
-1 = screen
-2 = battery
-3 = case
-'''
+	#available_phones = Phone.query.filter_by( status=part_type_id and Part.phoneId == None ).all()
+
+	return render_template('layout.html', table1data = csv.reader(dummyphones), table2data = csv.reader(dummyparts), table3data = csv.reader(dummyavailable))
+
+
 
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
@@ -47,13 +43,6 @@ def phone_orders_mock():
 	whatHappened = random.choice(possibilities)
 	return jsonify({'success':whatHappened[1]}), whatHappened[0]
    
-''' 
-Assuming this may be used once manufacturing has endpoints?
-@app.route('/inventory/phones/order', methods=["POST"])
-def create_new_phones(orderQuantity, phoneModelId):
-	r = requests.post("http://127.0.0.1/manufacturing/order", orderQuantity, phoneModelId)
-	return json.dumps({'success':True}), 200, {'ContentType' : 'application/json'}
-'''
 
 @app.route('/inventory/phones/order', methods=['GET', 'POST'])
 def phone_orders():

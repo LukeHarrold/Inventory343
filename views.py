@@ -9,6 +9,7 @@ import re
 from model import Part, Phone, PhoneType
 import csv
 
+
 import json
 
 @app.route("/")
@@ -34,6 +35,7 @@ def send_part_information(num_parts, part_type_id):
 	for part_to_send in parts_to_send:
 		output.append( to_json_like_string(part_to_send))
 	return jsonify(output)
+
 
 
 

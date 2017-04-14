@@ -149,13 +149,23 @@ def holding_sales_hand_through_indexing(phoneModelId):
 
 @app.route('/inventory/phone/return/<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
-	'''
-	Marks a specific phone as “returned”
-	'''
 	returned_phone = Phone.query.filter(Phone.id==phoneId).first()
 	returned_phone.returnDate = datetime.datetime.now()
 	db.session.commit()
 	return json.dumps(({'success':True}, 200, {'ContentType' : 'application/json'}))
+
+@app.route('/inventory/phone/order/<modelId>/<numPhones>', methods=['GET'])
+def get_phones(modelId, numPhones):
+	phones = Phone.query.filter(Phone.modelId==modelId).limit(numPhones).all()
+	output = to_json_like_string(phones)
+	return jsonify(output)
+
+@app.route('/inventory/phone/mark_bogo/<phoneId>', methods=['GET'])
+def mark_as_bogo(phoneId):
+	bogo_phogo = Phone.query.filter(Phone.Id == phoneId).first()
+	bogo_phogo.Bogo = 1
+	db.session.commit()
+	return jsonify((bogo_phogo))
 
 @app.route('/inventory/phones/<phoneId>', methods=['GET'])	
 def get_phone_by_id(phoneId):

@@ -60,7 +60,7 @@ def send_broken_phones():
 	output = []
 	phones_to_send = Phone.query.filter_by(status="Broken")
 	for phone_to_send in phones_to_send:
-		output.append(to_json_like_string(phone_to_send))
+		output.append(to_json_like_string(phone_to_send)[0]["fields"])
 	print(output)
 	return jsonify((output))
 	
@@ -124,17 +124,16 @@ def all_phone_models():
 	all_models = PhoneType.query.all()
 	output = []
 	for model in all_models:
-		output.append(to_json_like_string(model))
+		output.append(to_json_like_string(model)[0]["fields"])
 	return jsonify(output)
-
 @app.route('/inventory/models/<phoneModelId>', methods=['GET'])
 def holding_sales_hand_through_indexing(phoneModelId):
 	'''
 	Returns a specific type of phone
 	'''
 	phoneModel = PhoneType.query.filter( PhoneType.id==phoneModelId ).first()
-	output = to_json_like_string(phoneModel)
-	return jsonify(output)
+	output = jsonify(to_json_like_string(phoneModel)[0]["fields"])
+	return (output)
 
 @app.route('/inventory/phone/return/<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
@@ -146,7 +145,7 @@ def mark_as_returned(phoneId):
 @app.route('/inventory/phone/order/<modelId>/<numPhones>', methods=['GET'])
 def get_phones(modelId, numPhones):
 	phones = Phone.query.filter(Phone.modelId==modelId).limit(numPhones).all()
-	output = to_json_like_string(phones)
+	output = to_json_like_string(phones)[0]["fields"]
 	return jsonify(output)
 
 @app.route('/inventory/phone/mark_bogo/<phoneId>', methods=['GET'])

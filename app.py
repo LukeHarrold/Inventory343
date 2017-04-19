@@ -4,6 +4,7 @@ from __init__ import app, db
 from flask import render_template
 import csv
 
+db.create_all()
 
 db.create_all()
 import model

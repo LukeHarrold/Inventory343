@@ -11,6 +11,7 @@ class Part(db.Model):
     used = db.Column(db.Boolean)
     partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
     phoneId = db.Column(db.Integer, db.ForeignKey('phones.id'))
+    bogo = db.Column(db.Boolean)
 
     def __init__(self, partType, modelType):
         self.partTypeId = partType
@@ -18,6 +19,7 @@ class Part(db.Model):
         self.defective = False
         self.used = False
         self.phoneId = phoneId
+        self.bogo = False
 
 
 ### EXPERIMENTAL ###
@@ -36,6 +38,7 @@ class Phone(db.Model):
     saleDate = db.Column(db.DateTime)
     returnDate = db.Column(db.DateTime)
     refurbishedDate = db.Column(db.DateTime)
+    bogo = db.Column(db.Boolean)
     #parts = db.relationship('Part', secondary=phoneParts,
     #    backref=db.backref('parts', lazy='dynamic'))
 
@@ -46,6 +49,7 @@ class Phone(db.Model):
         self.saleDate = None
         self.returnDate = None
         self.refurbishedDate = None
+        self.bogo = False
 
 
 class PhoneType(db.Model):

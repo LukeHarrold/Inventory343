@@ -29,6 +29,11 @@ INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, 
 INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 1, 1, 2, 3, 0);
 INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 7, 3, 0);
 
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (1, 0, 0, 5, 1, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (5, 0, 0, 2, 4, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (3, 0, 0, 7, 8, 0);
+
+
 --Phone id 3 refurbished with broken part in db
 INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 5, 2, 0);
 INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 2, 2, 0);
@@ -40,3 +45,5 @@ INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, 
 INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('New', 1, datetime('now'), datetime('now'), datetime('now'),0);
 INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Broken', 2, datetime('now'), datetime('now'), datetime('now'), 0);
 INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Refurbished', 2, datetime('now'), datetime('now'), datetime('now'), 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('New', 2, null, null, datetime('now'), 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Refurbished', 2, datetime('now'), null, datetime('now'), 0);

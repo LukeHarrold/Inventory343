@@ -63,11 +63,8 @@ def send_broken_phones():
 	phones_to_send = Phone.query.filter_by(status="Broken")
 	for phone_to_send in phones_to_send:
 		output.append(to_json_like_string(phone_to_send)[0]["fields"])
-	print(output)
 	return jsonify((output))
 	
-	#return json.dumps({'success':True}, 200, {'ContentType':'application/json'})
-
 
 @app.route('/inventory/mock', methods=['POST'])
 def stub_completed_phones():
@@ -101,7 +98,6 @@ def receive_fixed_phones(data):
 	'''
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
-	print("getting called")
 	num_phones = random.randint(1,10)
 	phone_models = ['h', 'm', 'l', 'f']
 	phones=[]
@@ -167,16 +163,6 @@ def get_phone_by_id(phoneId):
 	output = to_json_like_string(phone_to_send)
 	return jsonify((output))
 
-	phone_models = ['h', 'm', 'l', 'f']
-	statuses = ['New', 'Broken', 'Refurbished']
-	phone = {}
-	phone['id'] = phoneId
-	phone['model'] = random.choice(phone_models)
-	phone['status'] =  random.choice(statuses)
-	phone['screen'] = random.randint(1,1000)
-	phone['memory'] = random.randint(1,1000)
-	phone['keyboard'] = random.randint(1,1000)
-	return json.dumps(phone)
 
 def to_json_like_string(model_in):
 	""" Returns a JSON representation of an SQLAlchemy-backed object

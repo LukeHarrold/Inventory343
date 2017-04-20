@@ -36,14 +36,6 @@ def send_part_information(num_parts, part_type_id):
 		output.append( to_json_like_string(part_to_send))
 	return jsonify(output)
 
-
-
-
-@app.route('/inventory/phones/ordermock', methods=['POST'])
-def phone_orders_mock():
-	possibilities = [[200, True], [400, False]]
-	whatHappened = random.choice(possibilities)
-	return jsonify({'success':whatHappened[1]}), whatHappened[0]
    
 
 @app.route('/inventory/phones/order', methods=['GET', 'POST'])
@@ -66,32 +58,6 @@ def send_broken_phones():
 	return jsonify((output))
 	
 
-@app.route('/inventory/mock', methods=['POST'])
-def stub_completed_phones():
-	#Get phone information here
-	num_phones = random.randint(1,10)
-	phone_types = ['h', 'm', 'l', 'r']
-
-	part_types = ['battery', 'screen', 'memory']
-	#need to get battery, screen, and memory part number from db
-	phones = []
-
-	for phone in range(1, num_phones):
-		battery = random.randint(1,1000)
-		memory = random.randint(1001,10000)
-		screen = random.randint(10001, 18000)
-		
-
-		phone_info = {}
-		phone_info['id'] = phone
-		phone_info['model'] = random.choice(phone_types)
-		phone_info['battery'] = battery
-		phone_info['memory'] = memory
-		phone_info['screen'] = screen
-		phones.append(phone_info)
-	url = 'http://127.0.0.1:5000/inventory'
-	r = requests.post(url, data=json.dumps(phones))
-	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/inventory/<data>/', methods=["POST"])
 def receive_fixed_phones(data):
@@ -124,6 +90,7 @@ def all_phone_models():
 	for model in all_models:
 		output.append(to_json_like_string(model)[0]["fields"])
 	return jsonify(output)
+
 @app.route('/inventory/models/<phoneModelId>', methods=['GET'])
 def return_specific_model(phoneModelId):
 	'''

@@ -120,6 +120,7 @@ def all_phone_models():
 	for model in all_models:
 		output.append(to_json_like_string(model)[0]["fields"])
 	return jsonify(output)
+
 @app.route('/inventory/models/<phoneModelId>', methods=['GET'])
 def return_specific_model(phoneModelId):
 	'''

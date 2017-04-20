@@ -6,7 +6,7 @@ pip install flask
 pip install flask-sqlalchemy
 pip install requests
 ```
-Setting up the database:
+# Setting up the database:
 Our database is running on sqlite3.  Open the database file in the folder of the project (path_to_project/Inventory343/swen-343-inventory.db) and read in the setup.sql file.
 ```
 sqlite3 swen-343-inventory.db

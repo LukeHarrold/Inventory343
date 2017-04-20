@@ -63,18 +63,14 @@ def send_broken_phones():
 	phones_to_send = Phone.query.filter_by(status="Broken")
 	for phone_to_send in phones_to_send:
 		output.append(to_json_like_string(phone_to_send)[0]["fields"])
-	print(output)
 	return jsonify((output))
 	
-	#return json.dumps({'success':True}, 200, {'ContentType':'application/json'})
-
 
 @app.route('/inventory/<data>/', methods=["POST"])
 def receive_fixed_phones(data):
 	'''
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
-	print("getting called")
 	num_phones = random.randint(1,10)
 	phone_models = ['h', 'm', 'l', 'f']
 	phones=[]

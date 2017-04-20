@@ -69,33 +69,6 @@ def send_broken_phones():
 	#return json.dumps({'success':True}, 200, {'ContentType':'application/json'})
 
 
-@app.route('/inventory/mock', methods=['POST'])
-def stub_completed_phones():
-	#Get phone information here
-	num_phones = random.randint(1,10)
-	phone_types = ['h', 'm', 'l', 'r']
-
-	part_types = ['battery', 'screen', 'memory']
-	#need to get battery, screen, and memory part number from db
-	phones = []
-
-	for phone in range(1, num_phones):
-		battery = random.randint(1,1000)
-		memory = random.randint(1001,10000)
-		screen = random.randint(10001, 18000)
-		
-
-		phone_info = {}
-		phone_info['id'] = phone
-		phone_info['model'] = random.choice(phone_types)
-		phone_info['battery'] = battery
-		phone_info['memory'] = memory
-		phone_info['screen'] = screen
-		phones.append(phone_info)
-	url = 'http://127.0.0.1:5000/inventory'
-	r = requests.post(url, data=json.dumps(phones))
-	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
-
 @app.route('/inventory/<data>/', methods=["POST"])
 def receive_fixed_phones(data):
 	'''
@@ -167,16 +140,6 @@ def get_phone_by_id(phoneId):
 	output = to_json_like_string(phone_to_send)
 	return jsonify((output))
 
-	phone_models = ['h', 'm', 'l', 'f']
-	statuses = ['New', 'Broken', 'Refurbished']
-	phone = {}
-	phone['id'] = phoneId
-	phone['model'] = random.choice(phone_models)
-	phone['status'] =  random.choice(statuses)
-	phone['screen'] = random.randint(1,1000)
-	phone['memory'] = random.randint(1,1000)
-	phone['keyboard'] = random.randint(1,1000)
-	return json.dumps(phone)
 
 def to_json_like_string(model_in):
 	""" Returns a JSON representation of an SQLAlchemy-backed object

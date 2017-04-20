@@ -129,7 +129,7 @@ def all_phone_models():
 		output.append(to_json_like_string(model)[0]["fields"])
 	return jsonify(output)
 @app.route('/inventory/models/<phoneModelId>', methods=['GET'])
-def holding_sales_hand_through_indexing(phoneModelId):
+def return_specific_model(phoneModelId):
 	'''
 	Returns a specific type of phone
 	'''

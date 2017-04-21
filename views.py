@@ -47,7 +47,16 @@ def landing():
 	part_names = {}
 	part_types = PartType.query.all()
 	for part in part_types:
-		part_names[part.id] = part.partName
+		cap_loc = re.search('[A-Z][^A-Z]*', part.partName)
+		if cap_loc:
+			final_name = ''
+			span = cap_loc.span()
+			final_name = (part.partName[:span[0]] + ' ' + part.partName[span[0]:]).title()
+
+			print(final_name)
+		else:
+			final_name = part.partName.title()
+		part_names[part.id] = final_name
 
 	return render_template('layout.html', all_inventory_phones = all_inventory_phones, all_models = all_models, parts=parts, part_names=part_names)
 
@@ -61,6 +70,10 @@ def in_inventory(phone):
 			return True
 		else:
 			return False
+
+@app.route('/inventory/parts/purchase', methods=['GET'])		
+def purchase_parts():
+	return render_template('purchase.html')
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):

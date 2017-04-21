@@ -48,6 +48,10 @@
   {% endfor %}
 </table>
 
+<form action={{url_for('purchase_parts')}}>
+    <input type="submit" value="Purchase Parts" />
+</form>
+
 <!--A table showing how many available parts there are for each phone type-->
 <table style="width:100%">
 	<div class=t-h>Available Parts</div>

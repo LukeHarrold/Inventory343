@@ -52,8 +52,6 @@ def landing():
 			final_name = ''
 			span = cap_loc.span()
 			final_name = (part.partName[:span[0]] + ' ' + part.partName[span[0]:]).title()
-
-			print(final_name)
 		else:
 			final_name = part.partName.title()
 		part_names[part.id] = final_name

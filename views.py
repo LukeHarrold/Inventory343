@@ -70,8 +70,17 @@ def in_inventory(phone):
 			return False
 
 @app.route('/inventory/parts/purchase', methods=['GET'])		
-def purchase_parts():
-	return render_template('purchase.html')
+def purchase_parts_form():
+	part_names = {}
+	part_types = PartType.query.all()
+
+	return render_template('purchase.html', part_types=part_types)
+
+@app.route('/inventory/accounting', methods=['GET', 'POST'])		
+def purchase_parts_accounting():
+	result = request.form
+	print(result)
+	return render_template('layout.html')
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):

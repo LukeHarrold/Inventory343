@@ -3,7 +3,16 @@
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 {% block body %}
 
+	<form action="inventory/accounting" method="post">
+		Part Type<br>
+		{% for part in part_types %}
+			<input type="radio" name="part_type" value ={{part.partName}}> {{part.partName}}<br>
+		{% endfor %}
+		Amount<br>
+		<input type="number" name="part_amount" min="1"> 
 
+		<input type="submit" Value="Submit">
+	</form>
 
 
 {% endblock %}

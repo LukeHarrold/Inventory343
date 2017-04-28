@@ -1,12 +1,15 @@
 <!doctype html>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styling.css') }}">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% block body %}
 
 
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
-<table style="width:100%">
-  <div class=t-h>Phone Models</div>
+<table class="table table-striped">
+  <div class=t-h> <font size="+2">Phone Models</font></div>
   <tr>
     <th>Phone Name</th>
     <th>Model Number</th>
@@ -28,8 +31,8 @@
 </table>
 
 <!--A table showing all the available phones-->
-<table style="width:100%">
-  <div class=t-h>Available Phones</div>
+<table class="table table-striped">
+  <div class=t-h><font size="+2">Available Phones</font></div>
   <tr>
     <th>Phone Model</th>
     <th>Serial Number</th> 
@@ -53,8 +56,8 @@
 </form>
 
 <!--A table showing how many available parts there are for each phone type-->
-<table style="width:100%">
-	<div class=t-h>Available Parts</div>
+<table class="table table-striped">
+	<div  class=t-h><font size="+2">Available Parts</font></div>
   <tr>
     <th>Part ID</th>
     <th>Part Name</th>

@@ -6,7 +6,7 @@ import requests
 import random
 import datetime
 import re
-from model import Part, Phone, PhoneType
+from model import Part, Phone, PhoneType, PartType
 import csv
 
 
@@ -14,15 +14,103 @@ import json
 
 @app.route("/")
 def landing():
-	dummyphones = open('DummyData/dummyphonetable.csv')
-	dummyparts = open('DummyData/dummypartstable.csv')
-	dummyavailable = open('DummyData/dummyavailablephones.csv')
+	all_inventory_phones = {}
+	parts = {}
 
-	#available_phones = Phone.query.filter_by( status=part_type_id and Part.phoneId == None ).all()
+	#grab all phone models
+	all_models = PhoneType.query.all()
+	#build dictionary entry for model
+	for model in all_models:
+		if model.id not in all_inventory_phones:
+			all_inventory_phones[model.id] = {"New": [], "Refurbished": [], "Broken": []}
 
-	return render_template('layout.html', table1data = csv.reader(dummyphones), table2data = csv.reader(dummyparts), table3data = csv.reader(dummyavailable))
+	#grab all phones
+	all_phones = Phone.query.all()
+	
+	#check if phone is in inventory and add it into proper place
+	for phone in all_phones: 
+		if in_inventory(phone):
+			if phone.status in all_inventory_phones[phone.modelId]:
+				all_inventory_phones[phone.modelId][phone.status].append(phone)
+			else:
+				all_inventory_phones[phone.modelId][phone.status] = [phone]
+
+	#grab available parts
+	all_parts = Part.query.filter_by(used=0).filter_by(defective=0).all()
+
+	for part in all_parts:
+		if part.partTypeId in parts:
+			parts[part.partTypeId].append(part)
+		else:
+			parts[part.partTypeId] = [part]
+
+	part_names = {}
+	part_types = PartType.query.all()
+	for part in part_types:
+		cap_loc = re.search('[A-Z][^A-Z]*', part.partName)
+		if cap_loc:
+			final_name = ''
+			span = cap_loc.span()
+			final_name = (part.partName[:span[0]] + ' ' + part.partName[span[0]:]).title()
+		else:
+			final_name = part.partName.title()
+		part_names[part.id] = final_name
+
+	return render_template('layout.html', all_inventory_phones = all_inventory_phones, all_models = all_models, parts=parts, part_names=part_names)
+
+def in_inventory(phone):
+	if phone.saleDate == None:
+		return True
+	else:
+		if phone.returnDate == None:
+			return False
+		elif phone.saleDate > phone.returnDate:
+			return True
+		else:
+			return False
+
+@app.route('/inventory/parts/purchase', methods=['GET'])		
+def purchase_parts_form():
+	part_names = {}
+	part_types = PartType.query.all()
+
+	return render_template('purchase.html', part_types=part_types)
+
+@app.route('/inventory/parts/accounting', methods=['GET', 'POST'])		
+def purchase_parts_accounting():
+	result = request.form
+	part_request_name = result['part_type']
+	part_request_amount = result['part_amount']
+	part_info = PartType.query.filter_by(partName=part_request_name).first()
+	part_price = part_info.price
+	total_price = float(part_price)*float(part_request_amount)
+
+	purchase_dict = {"amount": total_price}
+	jsonify(purchase_dict)
+	requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
+
+	"""
+	#for part in part_request_amount:
+		#get part type id
+		#Get model
+		#defective=False
+		#used=False
+		#phoneId
+		#bogo=False
+		self.partTypeId = partType
+        self.modelType = modelType
+        self.defective = False
+        self.used = False
+        phoneId = phoneId
+        bogo = False
+    """
+	return redirect(url_for('landing'))
 
 
+@app.route('/inventory/phone/recall/<model_id>')
+def mark_as_recalled(model_id):
+
+	return app.make_response(('200', {'Content-Type': 'application/json'}))
 
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
@@ -36,14 +124,8 @@ def send_part_information(num_parts, part_type_id):
 		output.append( to_json_like_string(part_to_send))
 	return jsonify(output)
 
-   
-
 @app.route('/inventory/phones/order', methods=['GET', 'POST'])
 def phone_orders():
-	#None of this can be used, we have to wait for manufacturing and sales
-	#data = request.get_json(force=True)
-	#r = requests.post('http://127.0.0.1:5000/inventory/phones/ordermock', data = json.dumps(data))
-	#print(r.status_code)
 	return app.make_response((r.content, '200', {'Content-Type': 'application/json'}))
 
 @app.route('/inventory/send/', methods=['GET'])
@@ -57,7 +139,6 @@ def send_broken_phones():
 		output.append(to_json_like_string(phone_to_send)[0]["fields"])
 	return jsonify((output))
 	
-
 
 @app.route('/inventory/<data>/', methods=["POST"])
 def receive_fixed_phones(data):

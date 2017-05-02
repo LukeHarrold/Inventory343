@@ -84,7 +84,24 @@ def purchase_parts_accounting():
 	part_info = PartType.query.filter_by(partName=part_request_name).first()
 	part_price = part_info.price
 	total_price = float(part_price)*float(part_request_amount)
+
+	#Send total price to hr
 	print(total_price)
+	for part in part_request_amount:
+		#get part type id
+		#Get model
+		#defective=False
+		#used=False
+		#phoneId
+		#bogo=False
+		"""
+		self.partTypeId = partType
+        self.modelType = modelType
+        self.defective = False
+        self.used = False
+        phoneId = phoneId
+        bogo = False
+        """
 
 
 	return redirect(url_for('landing'))

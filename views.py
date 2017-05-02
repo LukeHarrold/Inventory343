@@ -85,26 +85,33 @@ def purchase_parts_accounting():
 	part_price = part_info.price
 	total_price = float(part_price)*float(part_request_amount)
 
-	#Send total price to hr
-	print(total_price)
-	for part in part_request_amount:
+	purchase_dict = {"amount": total_price}
+	jsonify(purchase_dict)
+	requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
+
+	"""
+	#for part in part_request_amount:
 		#get part type id
 		#Get model
 		#defective=False
 		#used=False
 		#phoneId
 		#bogo=False
-		"""
 		self.partTypeId = partType
         self.modelType = modelType
         self.defective = False
         self.used = False
         phoneId = phoneId
         bogo = False
-        """
-
-
+    """
 	return redirect(url_for('landing'))
+
+
+@app.route('/inventory/phone/recall/<model_id>')
+def mark_as_recalled(model_id):
+
+	return app.make_response(('200', {'Content-Type': 'application/json'}))
+
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):

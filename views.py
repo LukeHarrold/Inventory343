@@ -76,11 +76,18 @@ def purchase_parts_form():
 
 	return render_template('purchase.html', part_types=part_types)
 
-@app.route('/inventory/accounting', methods=['GET', 'POST'])		
+@app.route('/inventory/parts/accounting', methods=['GET', 'POST'])		
 def purchase_parts_accounting():
 	result = request.form
-	print(result)
-	return render_template('layout.html')
+	part_request_name = result['part_type']
+	part_request_amount = result['part_amount']
+	part_info = PartType.query.filter_by(partName=part_request_name).first()
+	part_price = part_info.price
+	total_price = float(part_price)*float(part_request_amount)
+	print(total_price)
+
+
+	return redirect(url_for('landing'))
 
 @app.route('/inventory/get-parts/<num_parts>/<part_type_id>', methods=['GET'])
 def send_part_information(num_parts, part_type_id):

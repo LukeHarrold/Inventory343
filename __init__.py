@@ -13,7 +13,7 @@ def db_connect():
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True #removes annoying message
-path = 'sqlite:///' + os.path.dirname(os.path.abspath(__file__)) + '/swen-343-inventory.db'
+path = 'mysql://root:shiesh7aiN@localhost/inventory'
 app.config['SQLALCHEMY_DATABASE_URI'] = path
 db = SQLAlchemy(app)
 

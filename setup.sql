@@ -20,30 +20,30 @@ INSERT INTO `phone_types` (`phoneType`, `screenTypeId`, `batteryTypeId`, `memory
 
 -- setup parts
 --Phone id 1 parts high end
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (1, 0, 1, 1, 1, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (1, 0, 1, 4, 1, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (1, 0, 1, 7, 1, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (1, 0, 1, 1, 1, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (1, 0, 1, 4, 1, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (1, 0, 1, 7, 1, 0, 0);
 
 --Phone id 2 parts with defective part middle end
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 5, 3, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 1, 1, 2, 3, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 7, 3, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 0, 1, 5, 3, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 1, 1, 2, 3, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 0, 1, 7, 3, 0, 0);
 
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (1, 0, 0, 5, 1, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (5, 0, 0, 2, 4, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (3, 0, 0, 7, 8, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (1, 0, 0, 5, 1, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (5, 0, 0, 2, 4, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (3, 0, 0, 7, 8, 0, 0);
 
 
 --Phone id 3 refurbished with broken part in db
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 5, 2, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 2, 2, 0);
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 0, 1, 7, 2, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 0, 1, 5, 2, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 0, 1, 2, 2, 0, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 0, 1, 7, 2, 0, 0);
 
-INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`) VALUES (2, 1, 0, 2, 2, 0);
+INSERT INTO `parts` (`modelType`, `defective`, `used`, `partTypeId`, `phoneId`, `bogo`, `isRecalled`) VALUES (2, 1, 0, 2, 2, 0, 0);
 
 -- setup phones
-INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('New', 1, datetime('now'), datetime('now'), datetime('now'),0);
-INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Broken', 2, datetime('now'), datetime('now'), datetime('now'), 0);
-INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Refurbished', 2, datetime('now'), datetime('now'), datetime('now'), 0);
-INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('New', 2, null, null, datetime('now'), 0);
-INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`) VALUES ('Refurbished', 2, datetime('now'), null, datetime('now'), 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`, `isRecalled`) VALUES ('New', 1, datetime('now'), datetime('now'), datetime('now'),0, 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`, `isRecalled`) VALUES ('Broken', 2, datetime('now'), datetime('now'), datetime('now'), 0, 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`, `isRecalled`) VALUES ('Refurbished', 2, datetime('now'), datetime('now'), datetime('now'), 0, 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`, `isRecalled`) VALUES ('New', 2, null, null, datetime('now'), 0, 0);
+INSERT INTO `phones` (`status`,`modelId`,`saleDate`,`returnDate`,`refurbishedDate`, `bogo`, `isRecalled`) VALUES ('Refurbished', 2, datetime('now'), null, datetime('now'), 0, 0);

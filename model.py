@@ -12,6 +12,8 @@ class Part(db.Model):
     partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
     phoneId = db.Column(db.Integer, db.ForeignKey('phones.id'))
     bogo = db.Column(db.Boolean)
+    isRecalled = db.column(db.Boolean)
+
 
     def __init__(self, partType, modelType):
         self.partTypeId = partType
@@ -20,6 +22,7 @@ class Part(db.Model):
         self.used = False
         self.phoneId = phoneId
         self.bogo = False
+        self.isRecalled = False
 
 
 ### EXPERIMENTAL ###
@@ -33,12 +36,13 @@ class Part(db.Model):
 class Phone(db.Model):
     __tablename__ = 'phones'
     id  = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.Integer)
+    status = db.Column(db.String(80))
     modelId = db.Column(db.Integer, db.ForeignKey('phone_types.id'))
     saleDate = db.Column(db.DateTime)
     returnDate = db.Column(db.DateTime)
     refurbishedDate = db.Column(db.DateTime)
     bogo = db.Column(db.Boolean)
+
     #parts = db.relationship('Part', secondary=phoneParts,
     #    backref=db.backref('parts', lazy='dynamic'))
 
@@ -64,6 +68,8 @@ class PhoneType(db.Model):
     price = db.Column(db.Float)
     deletedAt = db.Column(db.DateTime)
     phones = db.relationship('Phone', backref='phone_types', lazy='dynamic')
+    isRecalled = db.column(db.Boolean)
+
     # screenType = db.relationship('PartType', foreign_keys = 'screenTypeId')
     # batteryType = db.relationship('PartType', foreign_keys = 'batteryTypeId')
     # memoryType = db.relationship('PartType', foreign_keys = 'memoryTypeId')
@@ -77,6 +83,8 @@ class PhoneType(db.Model):
         self.description = description
         self.imagePath = imagePath
         self.price = price
+        self.deletedAt = None
+        self.isRecalled = False
 
 
 class PartType(db.Model):
@@ -99,5 +107,6 @@ class PartType(db.Model):
         self.partName = partName
         self.price = price
         self.startDate = datetime.utcnow()
-
+        self.endDate = None
+        self.deletedAt = None
 

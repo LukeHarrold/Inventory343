@@ -9,7 +9,6 @@ import re
 from model import Part, Phone, PhoneType, PartType
 import csv
 
-
 import json
 
 @app.route("/")
@@ -71,9 +70,7 @@ def in_inventory(phone):
 
 @app.route('/inventory/parts/purchase', methods=['GET'])		
 def purchase_parts_form():
-	part_names = {}
 	part_types = PartType.query.all()
-
 	return render_template('purchase.html', part_types=part_types)
 
 @app.route('/inventory/parts/accounting', methods=['GET', 'POST'])		
@@ -83,32 +80,41 @@ def purchase_parts_accounting():
 	part_request_amount = result['part_amount']
 	part_info = PartType.query.filter_by(partName=part_request_name).first()
 	part_price = part_info.price
-	total_price = float(part_price)*float(part_request_amount)
+	total_price = float(part_price)*round(float(part_request_amount))
 
 	purchase_dict = {"amount": total_price}
 	jsonify(purchase_dict)
-	requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
+	#requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
 
-	"""
-	#for part in part_request_amount:
-		#get part type id
-		#Get model
-		#defective=False
-		#used=False
-		#phoneId
-		#bogo=False
-		self.partTypeId = partType
-        self.modelType = modelType
-        self.defective = False
-        self.used = False
-        phoneId = phoneId
-        bogo = False
-    """
+
+	model_info = None
+
+	model_info = PhoneType.query.filter_by(screenTypeId=part_info.id).first()
+	if not model_info:
+		model_info = PhoneType.query.filter_by(batteryTypeId=part_info.id).first()
+		if not model_info:
+			model_info = PhoneType.query.filter_by(memoryTypeId=part_info.id).first()
+
+
+	num_created = 0
+	partType = part_info.id
+	modelType=model_info.id
+
+	request_amount = round(float(part_request_amount))
+	while num_created < request_amount:
+		part = Part(partType, modelType)
+		db.session.add(part)
+		num_created += 1
+
+	db.session.commit()
+
+
 	return redirect(url_for('landing'))
 
 
 @app.route('/inventory/phone/recall/<model_id>')
 def mark_as_recalled(model_id):
+
 
 	return app.make_response(('200', {'Content-Type': 'application/json'}))
 
@@ -140,8 +146,8 @@ def send_broken_phones():
 	return jsonify((output))
 	
 
-@app.route('/inventory/<data>/', methods=["POST"])
-def receive_fixed_phones(data):
+@app.route('/inventory/', methods=["POST"])
+def receive_fixed_phones():
 	'''
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
@@ -206,7 +212,6 @@ def get_phone_by_id(phoneId):
 	'''
 	Returns a specific phone based on its uid, or serial number
 	'''
-
 	phone_to_send = Phone.query.filter(Phone.id==phoneId).first()
 	output = to_json_like_string(phone_to_send)
 	return jsonify((output))

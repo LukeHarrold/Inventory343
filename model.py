@@ -20,7 +20,7 @@ class Part(db.Model):
         self.modelType = modelType
         self.defective = False
         self.used = False
-        self.phoneId = phoneId
+        self.phoneId = None
         self.bogo = False
         self.isRecalled = False
 

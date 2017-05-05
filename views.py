@@ -84,9 +84,7 @@ def purchase_parts_accounting():
 
 	purchase_dict = {"amount": total_price}
 	jsonify(purchase_dict)
-	#requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
-
-
+	requests.post('http://vm343e.se.rit.edu/inventory', json=purchase_dict)
 	model_info = None
 
 	model_info = PhoneType.query.filter_by(screenTypeId=part_info.id).first()
@@ -94,21 +92,16 @@ def purchase_parts_accounting():
 		model_info = PhoneType.query.filter_by(batteryTypeId=part_info.id).first()
 		if not model_info:
 			model_info = PhoneType.query.filter_by(memoryTypeId=part_info.id).first()
-
-
 	num_created = 0
 	partType = part_info.id
-	modelType=model_info.id
+	modelType = model_info.id
 
 	request_amount = round(float(part_request_amount))
 	while num_created < request_amount:
 		part = Part(partType, modelType)
 		db.session.add(part)
 		num_created += 1
-
 	db.session.commit()
-
-
 	return redirect(url_for('landing'))
 
 
@@ -147,24 +140,23 @@ def send_broken_phones():
 	
 
 @app.route('/inventory/', methods=["POST"])
-def receive_fixed_phones():
+def receive_phones():
 	'''
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
-	num_phones = random.randint(1,10)
-	phone_models = ['h', 'm', 'l', 'f']
-	phones=[]
-	for phone in range(num_phones):
-		phone_row = {}
-		phone_row["id"] = random.randint(1,100)
-		phone_row["model"] = random.choice(phone_models)
-		phone_row["status"] = "Refurbished"
-		phone_row["screen"] = random.randint(1,1000)
-		phone_row["memory"] = random.randint(1,1000)
-		phone_row["keyboard"] = random.randint(1,1000)
-		phones.append(phone_row)
-	r = requests.post("http://127.0.0.1/inventory", data=json.dumps(phones))
-	return json.dumps({'success':True}), 200, {'ContentType' : "application/json"}
+	phones = request.get_json()
+	for phone in phones[0]:
+		phoneId = phone["phoneID"]
+
+	     "phoneID": 2,
+	      "status": ‘new’,
+	      "modelID": 1, 
+	      “refurbishDate”: None,
+	#PartIDs are in the format screen, battery, memory
+	      “partIDs”: [‘1’, ‘2’, ‘3’],
+	      “bogo”:False,
+
+	return
 
 
 @app.route('/inventory/models/all', methods=["GET"])

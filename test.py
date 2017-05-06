@@ -1,70 +1,75 @@
 from __init__ import app, db
+from model import Part, Phone, PhoneType, PartType
 import unittest
 import json
 import requests
 import random
+import datatime
 
 class apiTest(unittest.TestCase):
-
+    
     def setUp(self):
         self.app = app.test_client()
 
-    #Manufacturing api
-
-
-    #/inventory/{numParts}/{partTypeId} --GET
-    def test_send_parts_info(self):
-        numParts = random.randint(1,3)
-        partTypeId = random.randint(1,3)
-        resp = self.app.get('/inventory/get-parts/{}/{}'.format(numParts, partTypeId))
-        
+    def test_send_part_information(self):
+        resp = self.app.get('/inventory/get-parts/{}/{}'.format(2, 2))
+        data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
         
+        resp = self.app.get('/inventory/get-parts/{}/{}'.format(2, 2))
 
-    #/inventory/ --POST
-    def test_recieve_completed_phones(self):
-        resp = self.app.get('/inventory/mock')
+    def test_send_broken_phones(self):
+        resp = self.app.get('/inventory/send/')
+        data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.headers['ContentType'], 'application/json')
-    
-        '''
-    def test_phone_order(self):
-        test_json = {"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}
-        resp = self.app.get('/inventory/phones/order', data=test_json)
-        self.assertEqual(resp.status_code, 200)
-
-    '''
-    def test_send_broken_phone(self):
-        test_json = '{"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}'
-        resp = self.app.get('/inventory/send/{}'.format(test_json))
-        self.assertEqual(resp.status_code, 200)
-
-        '''
-    def test_recieved_fixed_phone(self):
-        test_json = '{"status": "New", "screen": 866, "id": "ordermock", "keyboard": 389, "memory": 989, "model": "f"}'
-        resp = self.app.post('/inventory/{}/'.format(test_json))
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.headers['ContentType'], 'application/json')
-    '''
+        for phone in data:
+            self.assertEqual(phone['status'], 'Broken')
 
     def test_all_phone_models(self):
-        resp = self.app.get('/inventory/models/all')
+        resp = self.app.get('/inventory/models/all/')
+        data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(data), len(PhoneType.query.all()))
+    
+    def test_return_specific_model(self):
+        resp = self.app.get('/inventory/modesl/{}'.format(1))
+        data = json.load(resp.text.encode('utf-8'))
+        self.assertEqual(resp.status_code,200)
+        self.assertEqual(data['phoneType'], 'High')
+        self.assertEqual(data['screenTypeId'], 1)
+        self.assertEqual(data['batteryTypeId'], 6)
+        self.assertEqual(data['memoryTypeId'], 10)
+        self.assertEqual(data['description'], 'Top Tier Phone')
+        self.assertEqual(data['imagePath'], 'static/images/high.png')
+        self.assertEqual(data['price'], 600.00)
 
-    def test_holding_sales_hand_through_indexing_lol(self):
-        phoneModelId = random.randint(1,10)
-        resp = self.app.get('/inventory/models/{}'.format(phoneModelId))
+    def test_mark_as_returned(self):
+        resp = self.app.get('/inventory/phone/return/{}'.format(1))
         self.assertEqual(resp.status_code, 200)
+        
+    def test_get_phones(self):
+        resp = self.app.get('/inventory/phone/order/{}/{}'.format(2,2))
+        data = json.load(resp.text.encode('utf-8'))
+        self.assertEqual(resp.status_code,200)
+        self.assetTrue(len(data) <= 2)
+        self.assertEqual(data['id'], 2)
 
-    def test_mark_as_return(self):
-        phoneId = random.randint(1,10)
-        resp = self.app.get('/inventory/phone/return/{}'.format(phoneId))
+    def test_mark_as_bogo(self):
+        resp = self.app.get('/inventory/phone/mark_bogo/{}/'.format(2))
+        data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(data['bogo'], 1)
 
     def test_get_phone_by_id(self):
-        phoneId = random.randint(1,10)
-        resp = self.app.get('/inventory/phones/{}'.format(phoneId))
+        resp = self.app.get('/inventory/phones/{}'.format(2))
+        data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(data['id'], 2)
+        self.assertEqual(data['status'], 'Broken')
+        self.assertEqual(data['modelId'], 2)
+        
+
+
         
 if __name__ == "__main__":
     unittest.main()

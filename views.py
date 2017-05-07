@@ -147,14 +147,15 @@ def receive_phones():
 	phones = request.get_json()
 	for phone in phones[0]:
 		phoneId = phone["phoneID"]
-
+		'''
 	     "phoneID": 2,
 	      "status": ‘new’,
-	      "modelID": 1, 
-	      “refurbishDate”: None,
-	#PartIDs are in the format screen, battery, memory
+	     "modelID": 1, 
+	    “refurbishDate”: None,
+		#PartIDs are in the format screen, battery, memory
 	      “partIDs”: [‘1’, ‘2’, ‘3’],
 	      “bogo”:False,
+	    '''
 
 	return
 

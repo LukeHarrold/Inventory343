@@ -12,7 +12,7 @@ class Part(db.Model):
     partTypeId = db.Column(db.Integer, db.ForeignKey('part_types.id'))#We may want to change the primary key to use 2 strings such as battery, low
     phoneId = db.Column(db.Integer, db.ForeignKey('phones.id'))
     bogo = db.Column(db.Boolean)
-    isRecalled = db.column(db.Boolean)
+    isRecalled = db.Column(db.Boolean)
 
 
     def __init__(self, partType, modelType):
@@ -68,7 +68,7 @@ class PhoneType(db.Model):
     price = db.Column(db.Float)
     deletedAt = db.Column(db.DateTime)
     phones = db.relationship('Phone', backref='phone_types', lazy='dynamic')
-    isRecalled = db.column(db.Boolean)
+    isRecalled = db.Column(db.Boolean)
 
     # screenType = db.relationship('PartType', foreign_keys = 'screenTypeId')
     # batteryType = db.relationship('PartType', foreign_keys = 'batteryTypeId')

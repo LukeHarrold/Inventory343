@@ -1,0 +1,38 @@
+ROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), NULL, NULL)' at line 1
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`phone_types`, CONSTRAINT `phone_types_ibfk_1` FOREIGN KEY (`screenTypeId`) REFERENCES `part_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`phone_types`, CONSTRAINT `phone_types_ibfk_1` FOREIGN KEY (`screenTypeId`) REFERENCES `part_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`phone_types`, CONSTRAINT `phone_types_ibfk_1` FOREIGN KEY (`screenTypeId`) REFERENCES `part_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`phone_types`, CONSTRAINT `phone_types_ibfk_1` FOREIGN KEY (`screenTypeId`) REFERENCES `part_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`phone_types`, CONSTRAINT `phone_types_ibfk_1` FOREIGN KEY (`screenTypeId`) REFERENCES `part_types` (`id`))
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--Phone id 1 parts high end
+INSERT INTO parts (modelType, defective, used, partT' at line 1
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--Phone id 2 partswith defective part middle end
+INSERT INTO parts (modelType, d' at line 1
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--Phone id 3 refurbished with broken part in db
+INSERT INTO parts (modelType, de' at line 1
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`inventory`.`parts`, CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`modelType`) REFERENCES `phone_types` (`id`))
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), datetime('now'), datetime('now'),0, 0)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), datetime('now'), datetime('now'), 0, 0)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), datetime('now'), datetime('now'), 0, 0)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), 0, 0)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('now'), null, datetime('now'), 0, 0)' at line 1
+

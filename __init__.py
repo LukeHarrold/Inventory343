@@ -1,6 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+import ConfigParser
+
+config = ConfigParser.ConfigParser()
+
+try:
+    config.read("config.ini")
+except:
+    config = None
 
 
 def db_connect():
@@ -13,7 +21,10 @@ def db_connect():
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True #removes annoying message
-path = 'mysql://root:shiesh7aiN@localhost/inventory'
+if config != None:
+    path = 'mysql://' + config.get('MYSQLINFO','username') + ':' + config.get('MYSQLINFO', 'password') + '@localhost/inventory'
+else:
+    path = 'mysql://root:shiesh7aiN@localhost/inventory'
 app.config['SQLALCHEMY_DATABASE_URI'] = path
 db = SQLAlchemy(app)
 

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 from __init__ import app, db
 from flask import request, jsonify, render_template, url_for, redirect
 import requests
@@ -107,6 +108,28 @@ def purchase_parts_accounting():
 
 @app.route('/inventory/phone/recall/<model_id>')
 def mark_as_recalled(model_id):
+	#Mark model as recalled
+
+	try:
+		specific_model = PhoneType.query.filter_by( id=model_id )
+	except:
+		return 
+
+	specific_model.isRecalled = True
+
+	#mark status of phone as recalled
+	get_phone_type = PhoneType.query.filter_by(id = model_id)
+	for phone_type in get_phone_type:
+		phone_type.isRecalled = True
+	get_phones = Phone.query.filter_by(model_id=model_id)
+	get_parts = Part.query.all()
+	for phone in get_phones:
+		phone.status = "Recalled"
+		# Mark all the parts for each phone as recalled.
+		for part in get_parts:
+			if part.phoneId == phone.id:
+				part.isRecalled = True
+
 
 
 	return app.make_response(('200', {'Content-Type': 'application/json'}))

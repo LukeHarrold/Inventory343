@@ -11,13 +11,25 @@ class apiTest(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
+
+    def test_purchase_parts(self):
+        param = {
+            'part_type' : 'screenHigh',
+            'part_ammount': 10
+        }
+        current_num_part = len(PartType.query.filter_by(partName='screenHigh').all())
+        resp = self.app.post('/invenory/parts/accounting', data=param)
+        new_num_part = len(PartType.query.filter_by(partName='screenHigh').all().count())
+        self.assertEqual(new_num_part, current_num_part + 10)
+
     def test_send_part_information(self):
         resp = self.app.get('/inventory/get-parts/{}/{}'.format(2, 2))
         data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(data), 2)
+        for part in data: 
+            self.assertEqual(data['partTypeId'], 2)
         
-        resp = self.app.get('/inventory/get-parts/{}/{}'.format(2, 2))
-
     def test_send_broken_phones(self):
         resp = self.app.get('/inventory/send/')
         data = json.load(resp.text.encode('utf-8'))
@@ -67,8 +79,6 @@ class apiTest(unittest.TestCase):
         self.assertEqual(data['id'], 2)
         self.assertEqual(data['status'], 'Broken')
         self.assertEqual(data['modelId'], 2)
-        
-
 
         
 if __name__ == "__main__":

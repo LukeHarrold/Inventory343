@@ -1,14 +1,30 @@
 <!doctype html>
+<html>
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    div {
+      height: 237px;
+      overflow: scroll;
+    }
+  </style>
+</head>
 {% block body %}
 
+
+<form action={{url_for('purchase_parts_form')}}>
+    <input type = "submit" value = "Purchase Parts" />
+</form>
+
+
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
+<div>
 <table class="table table-striped">
-  <div class=t-h> <font size="+2">Phone Models</font></div>
+  <font size="+2">Phone Models</font>
   <tr>
     <th>Phone Name</th>
     <th>Model Number</th>
@@ -28,10 +44,12 @@
   </tr>
 {% endfor %}
 </table>
+</div>
 
 <!--A table showing all the available phones-->
+<div>
 <table class="table table-striped">
-  <div class=t-h><font size="+2">Available Phones</font></div>
+  <font size="+2">Available Phones</font>
   <tr>
     <th>Phone Model</th>
     <th>Serial Number</th> 
@@ -49,14 +67,13 @@
     {% endfor %}
   {% endfor %}
 </table>
+</div>
 
-<form action={{url_for('purchase_parts_form')}}>
-    <input type="submit" value="Purchase Parts" />
-</form>
 
 <!--A table showing how many available parts there are for each phone type-->
+<div>
 <table class="table table-striped">
-	<div  class=t-h><font size="+2">Available Parts</font></div>
+	<font size="+2">Available Parts</font>
   <tr>
     <th>Part ID</th>
     <th>Part Name</th>
@@ -65,12 +82,12 @@
   {% for part in parts %}
   <tr>
     <td>{{ part }}</td>
-    <td>{{ part_names[part]}}
+    <td>{{ part_names[part]}}</td>
     <td>{{ parts[part]|length }}</td>
   </tr>
   {% endfor %}
 </table>
-
+</div>
 
 {% endblock %}
 </html>

@@ -140,10 +140,15 @@ def send_part_information(num_parts, part_type_id):
 	'''
 	Sends the part information for the number and type of part specified.
 	'''
+	sent=0
 	output = []
-	parts_to_send = Part.query.filter_by( partTypeId=part_type_id and Part.phoneId == None ).all()
+	parts_to_send = Part.query.filter_by( partTypeId=part_type_id).filter_by(phoneId =None ).all()
 	for part_to_send in parts_to_send:
-		output.append( to_json_like_string(part_to_send))
+		if part_to_send.phoneId == None:
+			output.append( to_json_like_string(part_to_send))
+			sent += 1
+			if sent >= int(num_parts):
+				break
 	return jsonify(output)
 
 @app.route('/inventory/phones/order', methods=['GET', 'POST'])
@@ -170,15 +175,6 @@ def receive_phones():
 	phones = request.get_json()
 	for phone in phones[0]:
 		phoneId = phone["phoneID"]
-		'''
-	     "phoneID": 2,
-	      "status": ‘new’,
-	     "modelID": 1, 
-	    “refurbishDate”: None,
-		#PartIDs are in the format screen, battery, memory
-	      “partIDs”: [‘1’, ‘2’, ‘3’],
-	      “bogo”:False,
-	    '''
 
 	return
 

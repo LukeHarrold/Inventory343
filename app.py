@@ -9,11 +9,7 @@ db.create_all()
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    app.run(host='0.0.0.0', threaded=True, port=8080)
-=======
     app.run(host='0.0.0.0', threaded=True, port=80)
->>>>>>> 74969fb3cfac72683170e71d3d18fbff27cc69e7
 
 
  

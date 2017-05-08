@@ -165,7 +165,6 @@ def send_broken_phones():
 	for phone_to_send in phones_to_send:
 		output.append(to_json_like_string(phone_to_send)[0]["fields"])
 	return jsonify((output))
-	
 
 @app.route('/inventory/', methods=["POST"])
 def receive_phones():
@@ -173,10 +172,68 @@ def receive_phones():
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
 	phones = request.get_json()
-	for phone in phones[0]:
-		phoneId = phone["phoneID"]
+	print(phones)
+	phone_type = ''
 
-	return
+	if phones["phones"][0]["status"].lower() == 'new':
+		phone_type = 'new'
+	elif phones["phones"][0]["status"].lower() == 'refurbished':
+		phone_type = 'refurbished'
+	print(phone_type)
+
+	if phone_type == 'new':
+		for phone in phones["phones"]:
+			modelId = phone["modelID"]
+			status = phone["status"]
+			phone_to_add = Phone(status, modelId)
+			print(phone_to_add.id)
+			db.session.add(phone_to_add)
+
+			screen, battery, memory = phone["partIDs"]
+
+			db_screen = Part.query.filter_by(id=screen).first()
+			db_screen.phoneId = phone_to_add.id
+			db_screen.used = True
+
+			db_battery = Part.query.filter_by(id=battery).first()
+			db_battery.phoneId = phone_to_add.id
+			db_battery.used=True
+
+			db_memory = Part.query.filter_by(id=memory).first()
+			db_memory.phoneId = phone_to_add.id
+			db_memory.used=True
+
+			db.session.commit()
+	elif phone_type == 'refurbished':
+		for phone in phones["phones"]:
+			phoneId = phone["phoneID"]
+			db_phone = Phone.query.filter_by(id=phoneId).first()
+			db_phone.status = "Refurbished"
+			db_phone.refurbishedDate = datetime.datetime.now()
+
+			screen, battery, memory = phone["partIDs"]
+			broken = phone["broken"]
+
+			db_broken = Part.query.filter_by(id=broken).first()
+			db_broken.defective=True
+			db_broken.phoneId = None
+			db_broken.used=False
+
+			db_screen = Part.query.filter_by(id=screen).first()
+			db_screen.phoneId = phoneId
+			db_screen.used=True
+
+			db_battery = Part.query.filter_by(id=battery).first()
+			db_battery.phoneId = phoneId
+			db_battery.used=True
+
+			db_memory = Part.query.filter_by(id=memory).first()
+			db_memory.phoneId = phoneId
+			db_memory.used=True
+			db.session.commit()
+
+
+	return app.make_response(('200', {'Content-Type': 'application/json'}))
 
 
 @app.route('/inventory/models/all', methods=["GET"])

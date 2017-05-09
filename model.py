@@ -14,7 +14,6 @@ class Part(db.Model):
     bogo = db.Column(db.Boolean)
     isRecalled = db.Column(db.Boolean)
 
-
     def __init__(self, partType, modelType):
         self.partTypeId = partType
         self.modelType = modelType

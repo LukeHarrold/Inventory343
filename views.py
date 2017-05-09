@@ -273,7 +273,10 @@ def mark_as_returned(phoneId):
 @app.route('/inventory/phone/order/<modelId>/<numPhones>', methods=['GET'])
 def get_phones(modelId, numPhones):
 	phones = Phone.query.filter(Phone.modelId==modelId).limit(numPhones).all()
-	output = to_json_like_string(phones)[0]["fields"]
+	output=[]
+	for phone in phones:
+		output.append(to_json_like_string(phone)[0]["fields"])
+		
 	return jsonify(output)
 
 @app.route('/inventory/phone/mark_bogo/<phoneId>', methods=['GET'])

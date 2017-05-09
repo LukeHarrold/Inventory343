@@ -121,17 +121,16 @@ def mark_as_recalled(model_id):
 	get_phone_type = PhoneType.query.filter_by(id = model_id)
 	for phone_type in get_phone_type:
 		phone_type.isRecalled = True
-	get_phones = Phone.query.filter_by(model_id=model_id)
-	get_parts = Part.query.all()
+	get_phones = Phone.query.filter_by(modelId=model_id)
 	for phone in get_phones:
 		phone.status = "Recalled"
+		get_parts = Part.query.filter_by(phoneId=phone.id)
 		# Mark all the parts for each phone as recalled.
 		for part in get_parts:
-			if part.phoneId == phone.id:
-				part.isRecalled = True
+			part.isRecalled = True
 
 
-
+	db.session.commit()
 	return app.make_response(('200', {'Content-Type': 'application/json'}))
 
 

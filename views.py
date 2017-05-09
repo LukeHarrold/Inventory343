@@ -292,7 +292,7 @@ def get_phone_by_id(phoneId):
 	Returns a specific phone based on its uid, or serial number
 	'''
 	phone_to_send = Phone.query.filter(Phone.id==phoneId).first()
-	output = to_json_like_string(phone_to_send)
+	output = to_json_like_string(phone_to_send)[0]["fields"]
 	return jsonify((output))
 
 

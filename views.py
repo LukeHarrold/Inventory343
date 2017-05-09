@@ -257,6 +257,7 @@ def mark_as_returned(phoneId):
 
 	returned_phone = Phone.query.filter(Phone.id==phoneId).first()
 	returned_phone.returnDate = datetime.datetime.now()
+	returned_phone.status = "Broken"
 	db.session.commit()
 	
 	modelId = returned_phone.modelId
@@ -280,6 +281,12 @@ def mark_as_returned(phoneId):
 
 @app.route('/inventory/phone/order/<modelId>/<numPhones>', methods=['GET'])
 def get_phones(modelId, numPhones):
+	phones = Phone.query.filter(Phone.modelId==modelId).limit(numPhones).all()
+	if len(phones) < numPhones:
+		phone_json = {"orderQuantity": numPhones, "phoneModelID" : modelId}
+		jsonify(phone_json)
+		requests.post('http://vm343d.se.rit.edu/api/order', json=phone_json)
+		return app.make_response(('400', {'Content-Type': 'application/json'}))
 	phones = Phone.query.filter(Phone.modelId==modelId).limit(numPhones).all()
 	output=[]
 	for phone in phones:

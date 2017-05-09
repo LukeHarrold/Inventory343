@@ -41,8 +41,7 @@ class apiTest(unittest.TestCase):
         resp = self.app.get('/inventory/models/all/')
         data = json.loads(resp.data.decode('utf-8'))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(data), len(PhoneType.query.all()))
-'''   
+        self.assertEqual(len(data), len(PhoneType.query.all())) 
     def test_return_specific_model(self):
         resp = self.app.get('/inventory/models/{}'.format(1))
         data = json.loads(resp.text.encode('utf-8'))
@@ -54,7 +53,7 @@ class apiTest(unittest.TestCase):
         self.assertEqual(data['description'], 'Top Tier Phone')
         self.assertEqual(data['imagePath'], 'static/images/high.png')
         self.assertEqual(data['price'], 600.00)
-'''
+
 '''
     def test_mark_as_returned(self):
         resp = self.app.get('/inventory/phone/return/{}'.format(1))
@@ -66,14 +65,14 @@ class apiTest(unittest.TestCase):
         self.assertEqual(resp.status_code,200)
         self.assetTrue(len(data) <= 2)
         for phone in data: 
-            self.assertEqual(phone['id'], 2)
-'''
+            self.assertEqual(phone['modelId'], 2)
+
     def test_mark_as_bogo(self):
-        resp = self.app.get('/inventory/phone/mark_bogo/{}/'.format(2))
+        resp = self.app.get('/inventory/phone/mark_bogo/{}'.format(2))
         data = json.loads(resp.data.decode('utf-8'))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['bogo'], 1)
-'''
+
     def test_get_phone_by_id(self):
         resp = self.app.get('/inventory/phones/{}'.format(2))
         data = json.loads(resp.data.decode('utf-8'))

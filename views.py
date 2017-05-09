@@ -281,10 +281,10 @@ def get_phones(modelId, numPhones):
 
 @app.route('/inventory/phone/mark_bogo/<phoneId>', methods=['GET'])
 def mark_as_bogo(phoneId):
-	bogo_phogo = Phone.query.filter(Phone.Id == phoneId).first()
-	bogo_phogo.Bogo = 1
+	bogo_phogo = Phone.query.filter(Phone.id == phoneId).first()
+	bogo_phogo.bogo = True
 	db.session.commit()
-	return jsonify((bogo_phogo))
+	return jsonify(to_json_like_string(bogo_phogo)[0]["fields"])
 
 @app.route('/inventory/phones/<phoneId>', methods=['GET'])	
 def get_phone_by_id(phoneId):

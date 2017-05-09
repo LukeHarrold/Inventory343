@@ -4,15 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styling.css') }}">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
-    div {
-      height: 300px;
-      overflow: scroll;
-      border-style: ridge;
-    }
-  </style>
 </head>
 {% block body %}
 
@@ -20,49 +15,49 @@
 <!--Table containing a broad overview of each type of phone in stock, each types price, and each types condition.-->
 <font size="+2">Phone Models</font>
 <div>
-<table class="table table-striped">
-  <tr>
-    <th>Phone Name</th>
-    <th>Model Number</th>
-    <th>Price</th> 
-    <th>New In Stock</th> 
-    <th>Refurbished In Stock</th> 
-    <th>Broken In Stock</th> 
-  </tr>
-  {% for model in all_models %}
-  <tr>
-    <td>{{model.phoneType}}</td>
-    <td>{{model.id}}</td>
-    <td>${{model.price}}0</td>
-    <td>{{all_inventory_phones[model.id]["New"]|length}}</td>
-    <td>{{all_inventory_phones[model.id]["Refurbished"]|length}}</td>
-    <td>{{all_inventory_phones[model.id]["Broken"]|length}}</td>
-  </tr>
-{% endfor %}
-</table>
+  <table class="table table-striped">
+    <tr>
+      <th>Phone Name</th>
+      <th>Model Number</th>
+      <th>Price</th> 
+      <th>New In Stock</th> 
+      <th>Refurbished In Stock</th> 
+      <th>Broken In Stock</th> 
+    </tr>
+    {% for model in all_models %}
+    <tr>
+      <td>{{model.phoneType}}</td>
+      <td>{{model.id}}</td>
+      <td>${{model.price}}0</td>
+      <td>{{all_inventory_phones[model.id]["New"]|length}}</td>
+      <td>{{all_inventory_phones[model.id]["Refurbished"]|length}}</td>
+      <td>{{all_inventory_phones[model.id]["Broken"]|length}}</td>
+    </tr>
+  {% endfor %}
+  </table>
 </div>
 
 <!--A table showing all the available phones-->
 <font size="+2">Available Phones</font>
-<div>
-<table class="table table-striped">
-  <tr>
-    <th>Phone Model</th>
-    <th>Serial Number</th> 
-    <th>Phone Status</th> 
-  </tr>
-  {% for model in all_inventory_phones %}
-    {% for status in all_inventory_phones[model] %}
-      {% for phone in all_inventory_phones[model][status] %}
-      <tr>
-        <td>{{phone.modelId}}</td>
-        <td>{{phone.id}}</td>
-        <td>{{phone.status}}</td>
-      </tr>
+<div class = "table-scroll">
+  <table class="table table-striped">
+    <tr>
+      <th>Phone Model</th>
+      <th>Serial Number</th> 
+      <th>Phone Status</th> 
+    </tr>
+    {% for model in all_inventory_phones %}
+      {% for status in all_inventory_phones[model] %}
+        {% for phone in all_inventory_phones[model][status] %}
+        <tr>
+          <td>{{phone.modelId}}</td>
+          <td>{{phone.id}}</td>
+          <td>{{phone.status}}</td>
+        </tr>
+        {% endfor %}
       {% endfor %}
     {% endfor %}
-  {% endfor %}
-</table>
+  </table>
 </div>
 
 
@@ -71,7 +66,7 @@
 <form action={{url_for('purchase_parts_form')}}>
     <input type = "submit" value = "Purchase Parts" />
 </form>
-<div>
+<div class = "table-scroll">
 <table class="table table-striped">
   <tr>
     <th>Part ID</th>

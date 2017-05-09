@@ -172,21 +172,18 @@ def receive_phones():
 	Receives either new phones or refurbished phones from manufacturing with replaced parts
 	'''
 	phones = request.get_json()
-	print(phones)
 	phone_type = ''
 
 	if phones["phones"][0]["status"].lower() == 'new':
 		phone_type = 'new'
 	elif phones["phones"][0]["status"].lower() == 'refurbished':
 		phone_type = 'refurbished'
-	print(phone_type)
 
 	if phone_type == 'new':
 		for phone in phones["phones"]:
 			modelId = phone["modelID"]
 			status = phone["status"]
 			phone_to_add = Phone(status, modelId)
-			print(phone_to_add.id)
 			db.session.add(phone_to_add)
 
 			screen, battery, memory = phone["partIDs"]
@@ -261,6 +258,17 @@ def mark_as_returned(phoneId):
 	returned_phone = Phone.query.filter(Phone.id==phoneId).first()
 	returned_phone.returnDate = datetime.datetime.now()
 	db.session.commit()
+	
+	modelId = returned_phone.modelID
+
+	#from model id, get part ids
+	model_information = PhoneType.query.filter_by(id=modelId).first()
+	#ask for each part id individually
+	screen = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.screenTypeId).first()
+	battery = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.batteryTypeId).first()
+	memory = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.memoryTypeId).first()
+
+
 	return json.dumps(({'success':True}, 200, {'ContentType' : 'application/json'}))
 
 @app.route('/inventory/phone/order/<modelId>/<numPhones>', methods=['GET'])

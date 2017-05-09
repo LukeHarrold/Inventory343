@@ -6,9 +6,10 @@ td {
   text-align: left;
 }
 
-table {
-  border-collapse: collapse;
-  border: 1px solid black;
+.table-scroll {
+  overflow: scroll;
+  border-style: ridge;
+  height: 300px;
 }
 
 .t-h {
@@ -22,3 +23,4 @@ table {
   text-decoration: none;
   display: inline-block;
 }
+

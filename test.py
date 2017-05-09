@@ -44,7 +44,7 @@ class apiTest(unittest.TestCase):
         self.assertEqual(len(data), len(PhoneType.query.all()))
     
     def test_return_specific_model(self):
-        resp = self.app.get('/inventory/modesl/{}'.format(1))
+        resp = self.app.get('/inventory/models/{}'.format(1))
         data = json.load(resp.text.encode('utf-8'))
         self.assertEqual(resp.status_code,200)
         self.assertEqual(data['phoneType'], 'High')

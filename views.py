@@ -113,7 +113,7 @@ def mark_as_recalled(model_id):
 	try:
 		specific_model = PhoneType.query.filter_by( id=model_id )
 	except:
-		return 
+		return {'error_message': 'Error while accessing database'}, 400
 
 	specific_model.isRecalled = True
 
@@ -254,19 +254,27 @@ def return_specific_model(phoneModelId):
 
 @app.route('/inventory/phone/return/<phoneId>', methods=['GET'])	
 def mark_as_returned(phoneId):
+
 	returned_phone = Phone.query.filter(Phone.id==phoneId).first()
 	returned_phone.returnDate = datetime.datetime.now()
 	db.session.commit()
 	
-	modelId = returned_phone.modelID
+	modelId = returned_phone.modelId
 
 	#from model id, get part ids
 	model_information = PhoneType.query.filter_by(id=modelId).first()
 	#ask for each part id individually
-	screen = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.screenTypeId).first()
-	battery = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.batteryTypeId).first()
-	memory = Part.query.filter(Part.modelType==modelID and Part.phoneId==returned_phone.id and Part.partTypeId==model_information.memoryTypeId).first()
+	screen = Part.query.filter_by(modelType=modelId).filter_by(phoneId=returned_phone.id).filter_by(partTypeId=model_information.screenTypeId).first()
+	battery = Part.query.filter_by(modelType=modelId).filter_by(phoneId=returned_phone.id).filter_by(partTypeId=model_information.batteryTypeId).first()
+	memory = Part.query.filter_by(modelType=modelId).filter_by(phoneId=returned_phone.id).filter_by(partTypeId=model_information.memoryTypeId).first()
+	phone_dict = {}
+	phone_dict["phoneID"] = returned_phone.id
+	phone_dict["modelID"] = model_information.id
+	phone_dict["parts"] = [screen.id, battery.id, memory.id]
+	phone_json = json.dumps(phone_dict)
+	
 
+	requests.post('http://vm343d.se.rit.edu/api/repair', json=phone_json)
 
 	return json.dumps(({'success':True}, 200, {'ContentType' : 'application/json'}))
 

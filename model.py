@@ -42,8 +42,7 @@ class Phone(db.Model):
     refurbishedDate = db.Column(db.DateTime)
     bogo = db.Column(db.Boolean)
 
-    #parts = db.relationship('Part', secondary=phoneParts,
-    #    backref=db.backref('parts', lazy='dynamic'))
+    parts = db.relationship('Part', backref='phones', lazy='dynamic')
 
     
     def __init__(self, status, model):

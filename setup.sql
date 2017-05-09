@@ -20,28 +20,12 @@ INSERT INTO phone_types (phoneType, screenTypeId, batteryTypeId, memoryTypeId, d
 
 -- setup phones
 INSERT INTO phones (status,modelId,saleDate,returnDate,refurbishedDate, bogo) VALUES ('New', 1, NOW(), null, null,0);
-INSERT INTO phones (status,modelId,saleDate,returnDate,refurbishedDate, bogo) VALUES ('Broken', 2, NOW(), NOW(), null, 0);
-INSERT INTO phones (status,modelId,saleDate,returnDate,refurbishedDate, bogo) VALUES ('Refurbished', 2, NOW(), NOW(), NOW(), 0);
-INSERT INTO phones (status,modelId,saleDate,returnDate,refurbishedDate, bogo) VALUES ('New', 2, NOW(), null, null, 0);
-INSERT INTO phones (status,modelId,saleDate,returnDate,refurbishedDate, bogo) VALUES ('Refurbished', 2, null, NOW(), NOW(), 0);
+
 
 
 INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 1, 1, 1, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 1, 4, 1, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 1, 7, 1, 0, 0);
-
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 0, 1, 5, 3, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 1, 1, 2, 3, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 0, 1, 7, 3, 0, 0);
-
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 0, 5, 1, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (5, 0, 0, 2, 4, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (3, 0, 0, 7, 8, 0, 0);
+INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 1, 6, 1, 0, 0);
+INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (1, 0, 1, 10, 1, 0, 0);
 
 
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 0, 1, 5, 2, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 0, 1, 2, 2, 0, 0);
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 0, 1, 7, 2, 0, 0);
-
-INSERT INTO parts (modelType, defective, used, partTypeId, phoneId, bogo, isRecalled) VALUES (2, 1, 0, 2, 2, 0, 0);
 

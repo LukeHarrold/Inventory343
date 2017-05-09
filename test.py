@@ -7,7 +7,7 @@ import random
 import datatime
 
 class apiTest(unittest.TestCase):
-    
+
     def setUp(self):
         self.app = app.test_client()
 
@@ -74,7 +74,7 @@ class apiTest(unittest.TestCase):
 
     def test_get_phone_by_id(self):
         resp = self.app.get('/inventory/phones/{}'.format(2))
-        data = json.load(resp.text.encode('utf-8'))
+        data = json.load(resp.text.decode('utf-8'))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['id'], 2)
         self.assertEqual(data['status'], 'Broken')
